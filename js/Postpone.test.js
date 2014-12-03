@@ -50,6 +50,20 @@ var ns = {}; // global namespace
         equal(ns.bar, "foo", "Property value after second attempt to replace placeholder");
     });
 
+    test("Postpone override", function () {
+        var ns = {};
+
+        troop.postpone(ns, 'foo', function () {
+            ns.foo = 'bar';
+        });
+
+        troop.postpone(ns, 'foo', function () {
+            ns.foo = 'baz';
+        });
+
+        equal(ns.foo, 'baz', "should overwrite generator function")
+    });
+
     test("Amendment", function () {
         expect(8);
 
@@ -62,7 +76,7 @@ var ns = {}; // global namespace
 
         propertyDescriptor = Object.getOwnPropertyDescriptor(ns, 'foo');
 
-        ok(!propertyDescriptor.get.amendments, "No amendments yet");
+        ok(!propertyDescriptor.get.amendments.length, "No amendments yet");
 
         var modifier = function (ns, propertyName, extraParam) {
             equal(extraParam, 'extraParam');
@@ -88,13 +102,27 @@ var ns = {}; // global namespace
 
     test("Amending resolved property", function () {
         var ns = {
-            foo: {bar: 'bar'}
+            foo: 'bar'
         };
 
         troop.amendPostponed(ns, 'foo', function () {
-            ns.foo.bar += 'baz';
+            ns.foo += 'baz';
         });
 
-        equal(ns.foo.bar, 'barbaz', "Amendment applied immediately");
+        equal(ns.foo, 'barbaz', "Amendment applied immediately");
+    });
+
+    test("Postponing after amendment", function () {
+        var ns = {};
+
+        troop.amendPostponed(ns, 'foo', function () {
+            ns.foo.push('baz');
+        });
+
+        troop.postpone(ns, 'foo', function () {
+            ns.foo = ['bar'];
+        });
+
+        deepEqual(ns.foo, ['bar', 'baz'], "Amendment applied after evaluating postpone");
     });
 }());
