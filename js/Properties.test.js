@@ -107,7 +107,7 @@
 
         deepEqual(
             troop.Properties.getPropertyNames(instance).sort(),
-            ["_hello","addConstants","addMethods","addMocks","addPrivate","addPrivateConstants","addPrivateMethods","addPublic","addSurrogate","addTrait","addTraitAndExtend","clearInstanceRegistry","create","elevateMethod","extend","foo","getBase","getTarget","init","instanceOf","isA","isBaseOf","isMemoized","prepareSurrogates","removeMocks","setInstanceMapper"]
+            ["_hello","addConstants","addMethods","addMocks","addPrivate","addPrivateConstants","addPrivateMethods","addPublic","addSurrogate","addTrait","addTraitAndExtend","clearInstanceRegistry","create","elevateMethod","elevateMethods","extend","foo","getBase","getTarget","init","instanceOf","isA","isBaseOf","isMemoized","prepareSurrogates","removeMocks","setInstanceMapper"]
         );
         deepEqual(
             troop.Properties.getPropertyNames(instance, troop.Base).sort(),
@@ -395,6 +395,19 @@
 
         var test = instance.test;
         equal(test(), instance, "Instance method tied to instance");
+    });
+
+    test("Multiple method elevation", function () {
+        var base = troop.Base.extend()
+                .addMethods({
+                    foo: function () {return this;},
+                    bar: function () {return this;}
+                }),
+            instance = Object.create(base);
+
+        troop.Base.elevateMethods.call(instance, 'foo', 'bar');
+        notEqual(instance.foo, base.foo, "should set instance level method (first)");
+        notEqual(instance.bar, base.bar, "should set instance level method (second)");
     });
 
     test("Mocks", function () {

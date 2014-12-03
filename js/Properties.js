@@ -309,8 +309,8 @@
                 propertyNames = troop.Properties.getPropertyNames(
                     trait,
                     troop.Base.isBaseOf(trait) ?
-                        troop.Base :
-                        Object.prototype
+                    troop.Base :
+                    Object.prototype
                 ),
                 i, propertyName, property;
 
@@ -329,8 +329,8 @@
                 property = trait[propertyName];
                 Object.defineProperty(
                     typeof property === 'function' ?
-                        hostTarget :
-                        this,
+                    hostTarget :
+                    this,
                     propertyName,
                     troop.Properties.getPropertyDescriptor(trait, propertyName)
                 );
@@ -435,6 +435,21 @@
             elevatedMethod[methodName] = baseMethod.bind(this);
             troop.Base.addMethods.call(this, elevatedMethod);
 
+            return this;
+        },
+
+        /**
+         * Elevates multiple methods. Method names are expected to be passed as individual arguments.
+         * (In no particular order.)
+         * @returns {troop.Base}
+         * @see troop.Base#elevateMethod
+         */
+        elevateMethods: function () {
+            var i, methodName;
+            for (i = 0; i < arguments.length; i++) {
+                methodName = arguments[i];
+                this.elevateMethod(methodName);
+            }
             return this;
         },
 
