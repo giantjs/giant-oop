@@ -31,65 +31,6 @@
         }
     });
 
-    /**
-     * @class troop.Surrogate
-     * @ignore
-     */
-    troop.Amendments = {
-        /**
-         * Retrieves amendments from postponed definition.
-         * Returns empty array when argument is not property descriptor or descriptor has no amendments assigned.
-         * @param {object} [propertyDescriptor]
-         * @returns {Array}
-         */
-        getAmendments: function (propertyDescriptor) {
-            return dessert.validators.isSetterGetterDescriptor(propertyDescriptor) &&
-                   propertyDescriptor.get.amendments ||
-                   [];
-        },
-
-        /**
-         * Sets amendments on postponed definition. Overwrites previous amendments.
-         * @param {object} propertyDescriptor
-         * @param {object[]} amendments
-         */
-        setAmendments: function (propertyDescriptor, amendments) {
-            var propertyGetter = propertyDescriptor.get;
-            propertyGetter.amendments = amendments;
-        },
-
-        /**
-         * @param {object} propertyDescriptor
-         * @param {function} modifier
-         * @param {Array} modifierArguments
-         */
-        addAmendment: function (propertyDescriptor, modifier, modifierArguments) {
-            var propertyGetter = propertyDescriptor.get;
-
-            propertyGetter.amendments = propertyGetter.amendments || [];
-
-            propertyGetter.amendments.push({
-                modifier: modifier,
-                args    : modifierArguments
-            });
-        },
-
-        /**
-         * Applies specified amendments to the specified property descriptor.
-         * @param {object} propertyDescriptor
-         * @param {object[]} amendments
-         */
-        applyAmendments: function (propertyDescriptor, amendments) {
-            var i, amendment;
-
-            if (amendments instanceof Array) {
-                for (i = 0; i < amendments.length; i++) {
-                    amendment = amendments[i];
-                    amendment.modifier.apply(troop, amendment.args);
-                }
-            }
-        }
-    };
 
     troop.Base.addMethods.call(troop, /** @lends troop */{
         /**
@@ -114,7 +55,7 @@
                 .isString(propertyName, "Invalid property name")
                 .isFunction(generator, "Invalid generator function");
 
-            var Amendments = troop.Amendments,
+            var Amendments = troop.AmendUtils,
                 propertyDescriptorBefore = Object.getOwnPropertyDescriptor(host, propertyName),
                 propertyDescriptorAfter,
                 generatorArguments = slice.call(arguments);
@@ -172,7 +113,7 @@
 
         /**
          * Applies a modifier to the postponed property to be called AFTER the property is resolved.
-         * Amendments are resolved in the order they were applied. Amendments should not expect other amendments
+         * AmendUtils are resolved in the order they were applied. AmendUtils should not expect other amendments
          * to be applied.
          * @param {object} host Host object.
          * @param {string} propertyName Property name.
@@ -215,7 +156,7 @@
             if (dessert.validators.isSetterGetterDescriptor(propertyDescriptor)) {
                 // property is setter-getter, ie. unresolved
                 // adding generator to amendment functions
-                troop.Amendments.addAmendment(propertyDescriptor, modifier, modifierArguments);
+                troop.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
             } else if (propertyDescriptor) {
                 // property is value, assumed to be a resolved postponed property
 
