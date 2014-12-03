@@ -3,7 +3,8 @@
     "use strict";
 
     var hOP = Object.prototype.hasOwnProperty,
-        slice = Array.prototype.slice;
+        slice = Array.prototype.slice,
+        validators = dessert.validators;
 
     dessert.addTypes(/** @lends dessert */{
         /**
@@ -30,7 +31,6 @@
                    hOP.call(propertyDescriptor, 'configurable');
         }
     });
-
 
     troop.Base.addMethods.call(troop, /** @lends troop */{
         /**
@@ -68,7 +68,8 @@
                 get: function getter() {
                     // obtaining property value
                     var value = generator.apply(this, generatorArguments),
-                        amendments = getter.amendments;
+                        amendments = getter.amendments,
+                        propertyDescriptor;
 
                     if (typeof value !== 'undefined') {
                         // generator returned a property value
@@ -80,9 +81,15 @@
                             configurable: false
                         });
                     } else {
-                        // no return value
-                        // generator supposedly assigned value to property
-                        value = host[propertyName];
+                        // fetching descriptor for resolved property
+                        // when descriptor is still a getter-setter, the postpone has not been resolved correctly
+                        propertyDescriptor = Object.getOwnPropertyDescriptor(host, propertyName);
+
+                        if (!validators.isSetterGetterDescriptor(propertyDescriptor)) {
+                            // no return value
+                            // generator supposedly assigned value to property
+                            value = host[propertyName];
+                        }
                     }
 
                     // applying amendments
@@ -153,7 +160,7 @@
                 propertyDescriptor = Object.getOwnPropertyDescriptor(host, propertyName);
             }
 
-            if (dessert.validators.isSetterGetterDescriptor(propertyDescriptor)) {
+            if (validators.isSetterGetterDescriptor(propertyDescriptor)) {
                 // property is setter-getter, ie. unresolved
                 // adding generator to amendment functions
                 troop.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);

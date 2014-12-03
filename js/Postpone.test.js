@@ -50,6 +50,16 @@ var ns = {}; // global namespace
         equal(ns.bar, "foo", "Property value after second attempt to replace placeholder");
     });
 
+    test("Infinite loop prevention", function () {
+        var ns = {};
+
+        troop.postpone(ns, 'foo', function () {
+            ns.bar = 'bar';
+        });
+
+        equal(ns.foo + 'baz', 'undefinedbaz', "should return undefined");
+    });
+
     test("Postpone override", function () {
         var ns = {};
 
