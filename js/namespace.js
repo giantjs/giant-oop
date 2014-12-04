@@ -4,4 +4,10 @@
 /*global require */
 /** @namespace */
 var troop = {},
-    dessert = dessert || require('dessert');
+    $t = troop;
+
+/**
+ * @class
+ * @see https://github.com/production-minds/dessert
+ */
+var dessert = dessert || require('dessert');

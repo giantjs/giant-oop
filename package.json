@@ -15,7 +15,7 @@
     "license"        : "MIT",
     "repository"     : {
         "type": "git",
-        "url" : "git@github.com:production-minds/troop.git"
+        "url" : "git://github.com/danstocker/troop.git"
     },
     "dependencies"   : {
         "dessert": "~0.3.2"
