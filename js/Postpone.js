@@ -124,8 +124,9 @@
 
         /**
          * Applies a modifier to the postponed property to be called AFTER the property is resolved.
-         * AmendUtils are resolved in the order they were applied. AmendUtils should not expect other amendments
+         * Amendments are resolved in the order they were applied. Amendments should not expect other amendments
          * to be applied.
+         * Amendments may be applied before the corresponding .postpone().
          * @param {object} host Host object.
          * @param {string} propertyName Property name.
          * @param {function} modifier Amends property value. Arguments: host object, property name,
