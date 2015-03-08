@@ -7,7 +7,7 @@
 
     /**
      * Implements methods to detect environment features relevant to OOP and testing.
-     * @class troop.Feature
+     * @class
      */
     troop.Feature = {
         /**

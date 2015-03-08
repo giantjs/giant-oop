@@ -8,7 +8,7 @@
     var hOP = Object.prototype.hasOwnProperty;
 
     /**
-     * @class troop.Surrogate
+     * @class
      * @ignore
      */
     troop.Surrogate = {

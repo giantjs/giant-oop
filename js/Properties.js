@@ -16,7 +16,6 @@
          * own property.
          * @param {string} propertyName
          * @param {object} host
-         * @returns {Boolean}
          */
         isPropertyNameAvailable: function (propertyName, host) {
             return !hOP.call(host, propertyName);
@@ -26,7 +25,6 @@
          * Checks property names against prefix.
          * @param {object} expr Host object.
          * @param {string} prefix Prefix.
-         * @returns {boolean} Whether all properties on the object satisfy the prefix condition.
          */
         isAllPrefixed: function (expr, prefix) {
             var propertyNames,
@@ -50,7 +48,6 @@
         /**
          * Tells whether an object holds a getter / setter pair.
          * @param {object} expr Host object.
-         * @returns {boolean}
          */
         isAccessor: function (expr) {
             var accessorMethods = {
@@ -69,7 +66,7 @@
     /**
      * Allows properties to be added to arbitrary objects as if they were Troop classes.
      * The Troop base class uses these methods internally. They are exposed however due to their usefulness in testing.
-     * @class troop.Properties
+     * @class
      */
     troop.Properties = {
         /**

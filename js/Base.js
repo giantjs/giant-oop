@@ -14,7 +14,6 @@
         /**
          * Checks whether properties of `expr` are *all* functions.
          * @param {object} expr
-         * @returns {Boolean}
          */
         isAllFunctions: function (expr) {
             var methodNames,
@@ -37,7 +36,6 @@
         /**
          * Verifies if `expr` is a Troop class.
          * @param {troop.Base} expr
-         * @returns {Boolean}
          */
         isClass: function (expr) {
             return self.isPrototypeOf(expr);
@@ -46,7 +44,6 @@
         /**
          * Verifies if `expr` is a Troop class or is not defined.
          * @param {troop.Base} expr
-         * @returns {Boolean}
          */
         isClassOptional: function (expr) {
             return typeof expr === 'undefined' ||
@@ -56,7 +53,7 @@
 
     /**
      * Base class. Implements tools for building, instantiating and testing classes.
-     * @class troop.Base
+     * @class
      */
     troop.Base = {
         /**
