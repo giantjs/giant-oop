@@ -12,6 +12,7 @@ module.exports = function (grunt) {
             'js/Instantiation.js',
             'js/Properties.js',
             'js/AmendUtils.js',
+            'js/BuiltInUtils.js',
             'js/Postpone.js',
             'js/exports.js'
         ],
