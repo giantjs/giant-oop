@@ -1,8 +1,3 @@
-/**
- * Property Management.
- *
- * Adding properties and methods to a class or instance.
- */
 /*global dessert, troop, console */
 (function () {
     "use strict";

@@ -1,6 +1,3 @@
-/**
- * Feature detection.
- */
 /*global troop */
 (function () {
     "use strict";

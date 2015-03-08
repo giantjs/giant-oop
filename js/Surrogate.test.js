@@ -1,6 +1,3 @@
-/**
- * Surrogate unit tests
- */
 /*global troop, module, test, ok, equal, deepEqual, expect, raises */
 var globalNs = {};
 

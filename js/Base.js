@@ -1,10 +1,3 @@
-/**
- * Base Class.
- *
- * Most basic features required to build rest of the library
- * are implemented here. Rest of its methods are implemented
- * and applied by each feature separately.
- */
 /*global dessert, troop */
 (function () {
     "use strict";

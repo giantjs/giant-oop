@@ -1,6 +1,3 @@
-/**
- * Feature detection unit tests
- */
 /*global troop, module, test, ok, equal, deepEqual, expect */
 (function () {
     "use strict";

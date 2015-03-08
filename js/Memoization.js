@@ -1,6 +1,3 @@
-/**
- * Surrogate Class Feature
- */
 /*global dessert, troop */
 (function () {
     "use strict";

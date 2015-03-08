@@ -1,6 +1,3 @@
-/**
- * Base class unit tests
- */
 /*global dessert, troop, module, test, ok, equal, notEqual, strictEqual, deepEqual, raises, expect, mock, unMock */
 (function () {
     "use strict";
