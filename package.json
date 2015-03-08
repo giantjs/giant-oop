@@ -1,17 +1,14 @@
 {
     "name"           : "troop",
-    "version"        : "0.8.0",
+    "version"        : "0.9.0",
     "description"    : "Full-featured, testable OOP",
     "keywords"       : [
-        "oop",
-        "class",
-        "inheritance",
-        "testing",
-        "mocks",
-        "memoization"
+        "oop", "class", "classical", "inheritance", "trait", "traits",
+        "testing", "mocks",
+        "memoization", "surrogate", "surrogates"
     ],
     "author"         : "Dan Stocker <dan@kwaia.com>",
-    "copyright"      : "Copyright (c) 2012-2014 Dan Stocker, Production Minds SD Limited",
+    "copyright"      : "Copyright (c) 2012-2015 Dan Stocker, Production Minds SD Limited",
     "license"        : "MIT",
     "repository"     : {
         "type": "git",

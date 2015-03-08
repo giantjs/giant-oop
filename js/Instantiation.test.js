@@ -7,40 +7,21 @@
 
     module("Instantiation");
 
-    test("Instantiation", function () {
-        var myClass = troop.Base.extend(),
-            instance1, instance2;
+    test("Instance creation", function () {
+        var MyClass = troop.Base.extend(),
+            instance;
 
-        expect(5);
+        expect(3);
 
-        myClass.init = function (arg) {
+        MyClass.init = function (arg) {
             this.test = "bar";
-            equal(arg, 'testArgument', "Class init called");
+            equal(arg, 'testArgument', "should call init of the class");
         };
-        instance1 = myClass.create('testArgument');
-        equal(instance1.test, "bar", "Instance initialized");
 
-        myClass.init = function () {
-            return instance1;
-        };
-        instance2 = myClass.create();
-        equal(instance2, instance1, "Instantiation returned a different object");
+        instance = MyClass.create('testArgument');
 
-        myClass.init = function () {
-            return 5; // invalid type to return here
-        };
-        raises(function () {
-            instance2 = myClass.create();
-        }, "Initializer returned invalid type");
-
-        delete myClass.init;
-
-        raises(
-            function () {
-                instance1 = troop.Base.create('testArgument');
-            },
-            "Class doesn't implement .init method"
-        );
+        ok(instance.isA(MyClass), "should return an instance of the class");
+        equal(instance.test, "bar", "should return initialized instance");
     });
 
     test("Memoized instantiation", function () {
@@ -53,147 +34,88 @@
                 }),
             instance;
 
-        deepEqual(MyClass.instanceRegistry, {}, "Initially, instance registry is empty");
+        deepEqual(MyClass.instanceRegistry, {},
+            "should initialize instance registry as empty object");
 
         instance = MyClass.create('foo');
 
-        deepEqual(
-            MyClass.instanceRegistry,
-            {
-                foo: instance
-            },
-            "Instance stored in registry"
-        );
+        deepEqual(MyClass.instanceRegistry, {
+            foo: instance
+        }, "should set instance in registry");
 
-        strictEqual(MyClass.create('foo'), instance, "Same constructor args fetch same instance");
+        strictEqual(MyClass.create('foo'), instance,
+            "should return the same instance on subsequent instantiation");
     });
 
-    test("Surrogate integration test", function () {
+    test("Surrogate instantiation", function () {
+        expect(4);
+
         var ns = {};
 
-        /**
-         * Base class for surrogate testing.
-         */
-        ns.base = troop.Base.extend()
-            .addSurrogate(ns, 'child', function (test) {
-                ok("Filter triggered");
-                return test === 'test';
+        ns.Base = troop.Base.extend()
+            .addSurrogate(ns, 'Child1', function (test) {
+                return test === 'foo';
             })
-            .addSurrogate(ns, 'initless', function (test) {
-                return test === 'initless';
-            })
-            .addMethods({
-                init: function () {}
+            .addSurrogate(ns, 'Child2', function (test) {
+                return test === 'bar';
             });
 
-        /**
-         * Child class that also serves as a surrogate for base.
-         */
-        ns.child = ns.base.extend()
+        ns.Child1 = ns.Base.extend()
             .addMethods({
                 init: function (test) {
-                    equal(test, 'test', "Argument passed to filter");
+                    equal(test, 'foo', "should call .init of the surrogate class");
                 }
             });
 
-        /**
-         * Init-less class for checking whether instantiation
-         * verifies init() on the extended class.
-         */
-        ns.initless = ns.base.extend();
+        ns.Child2 = ns.Base.extend();
 
-        expect(8);
-
-        // triggers filter & init (1 + 2)
-        ok(ns.base.create('test').isA(ns.child), "Triggered filter changes class");
-
-        // triggers filter only (1 + 1)
-        equal(ns.base.create('blah').isA(ns.child), false, "Constructor args don't satisfy filter");
-
-        // triggers init only (1)
-        ns.child.create('test');
-
-        // triggers filter(s) only (1 + 1)
-        ok(ns.base.create('initless').isA(ns.initless), "Init-less child class instantiated");
-
-        // does not trigger anything (0)
-        ns.initless.create('test');
+        ok(ns.Base.create('foo').isA(ns.Child1),
+            "should return an instance of a suitable surrogate");
+        ok(!ns.Base.create('blah').isA(ns.Child1),
+            "should return base class instance when no suitable surrogate is found");
+        ok(ns.Base.create('bar').isA(ns.Child2),
+            "should return instance of other suitable surrogate for different arguments");
     });
 
-    test("Surrogate / memoized", function () {
+    test("Instantiation with surrogates & memoization", function () {
         var ns = {};
 
         ns.Base = troop.Base.extend()
             .setInstanceMapper(function (foo) {
                 return foo;
             })
-            .addSurrogate(ns, 'Child', function (foo) {
+            .addSurrogate(ns, 'MemoizedChild', function (foo) {
                 return foo === 'bar';
             })
-            .addMethods({
-                init: function () {}
+            .addSurrogate(ns, 'NonMemoizedChild', function (foo) {
+                return foo === 'baz';
             });
 
-        ns.Child = ns.Base.extend();
+        ns.NonMemoizedChild = ns.Base.extend();
 
-        // creating instances
-        var base = ns.Base.create('foo'),
-            child = ns.Base.create('bar');
+        ns.MemoizedChild = ns.Base.extend()
+            .setInstanceMapper(function (foo) {
+                return foo;
+            });
 
-        ok(base.instanceOf(ns.Base), "Base class instance");
-        ok(child.instanceOf(ns.Child), "Child class instance");
+        var base1 = ns.Base.create('foo'),
+            base2 = ns.Base.create('bar'),
+            base3 = ns.Base.create('baz'),
+            child2 = ns.MemoizedChild.create('baz'),
+            child3 = ns.NonMemoizedChild.create('yaz');
 
-        strictEqual(ns.Child.instanceRegistry, ns.Base.instanceRegistry, "Child sees base's instance registry");
+        deepEqual(ns.Base.instanceRegistry, {
+            foo: base1,
+            baz: base3,
+            yaz: child3
+        }, "should set instances of base class and non-memoized child class on base class' instance registry");
 
-        ok(!(ns.Child.hasOwnProperty('instanceRegistry')), "Child class has no instance registry of its own");
+        deepEqual(ns.MemoizedChild.instanceRegistry, {
+            bar: base2,
+            baz: child2
+        }, "should set instances of memoized child class on child class' instance registry");
 
-        deepEqual(
-            ns.Base.instanceRegistry,
-            {
-                foo: base,
-                bar: child
-            },
-            "Instances added to registry"
-        );
-    });
-
-    test("Custom instance value", function () {
-        expect(3);
-
-        troop.Base.init = function () {
-            return troop.Base; // not immediate extension of class
-        };
-        raises(function () {
-            troop.Base.create();
-        }, "Initializer returned object same as class");
-
-        var result = Object.create(troop.Base);
-        troop.Base.init = function () {
-            return result; // not full immediate extension of class
-        };
-        equal(troop.Base.create(), result, "Initializer returns immediate extension of class");
-
-        result = Object.create(Object.create(troop.Base));
-        troop.Base.init = function () {
-            return result; // not full immediate extension of class
-        };
-        equal(troop.Base.create(), result, "Initializer returned farther extension of class");
-
-        delete troop.Base.init;
-    });
-
-    test("Custom instance value in testing mode", function () {
-        expect(1);
-        troop.testing = true;
-
-        troop.Base.init = function () {
-            return troop.Base; // not immediate extension of class
-        };
-        raises(function () {
-            troop.Base.create();
-        }, "Initializer returned object same as class");
-
-        troop.testing = false;
-        delete troop.Base.init;
+        strictEqual(ns.MemoizedChild.create('bar'), base2,
+            "should be irrelevant through which class we instantiate");
     });
 }());
