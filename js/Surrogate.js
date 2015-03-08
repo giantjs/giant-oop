@@ -42,33 +42,31 @@
          * @returns {troop.Base}
          */
         getSurrogate: function () {
-            var args = arguments,
-                preparationHandler,
-                descriptors,
-                i, descriptor;
-
             /**
              * Surrogate info property must be the class' own property
              * otherwise surrogates would be checked on instantiating
              * every descendant of the current class, too.
              * This would be wasteful, unnecessary, and confusing.
              */
-            if (hOP.call(this, 'surrogateInfo')) {
-                // dealing with preparation handler
-                preparationHandler = this.surrogateInfo.preparationHandler;
-                if (preparationHandler) {
-                    args = preparationHandler.apply(this, arguments) || arguments;
-                }
+            if (!hOP.call(this, 'surrogateInfo')) {
+                // class has no surrogate
+                return this;
+            }
 
-                // going through descriptors and determining surrogate
-                descriptors = this.surrogateInfo.descriptors;
-                for (i = 0; i < descriptors.length; i++) {
-                    descriptor = descriptors[i];
+            var surrogateInfo = this.surrogateInfo,
+                preparationHandler = surrogateInfo.preparationHandler,
+                descriptorArguments = preparationHandler && preparationHandler.apply(this, arguments) ||
+                                      arguments,
+                descriptors = surrogateInfo.descriptors,
+                i, descriptor;
 
-                    // determining whether arguments fit next filter
-                    if (descriptor.filter.apply(this, args)) {
-                        return descriptor.namespace[descriptor.className];
-                    }
+            // going through descriptors and determining surrogate
+            for (i = 0; i < descriptors.length; i++) {
+                descriptor = descriptors[i];
+
+                // determining whether arguments fit next filter
+                if (descriptor.filter.apply(this, descriptorArguments)) {
+                    return descriptor.namespace[descriptor.className];
                 }
             }
 
