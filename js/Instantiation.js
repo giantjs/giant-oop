@@ -49,7 +49,7 @@
             }
 
             // storing instance for memoized class
-            if (instanceMapper) {
+            if (instanceMapper && typeof instanceKey !== 'undefined') {
                 Memoization.addInstance.call(self, instanceKey, that);
             }
 

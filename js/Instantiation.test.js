@@ -28,9 +28,6 @@
         var MyClass = troop.Base.extend()
                 .setInstanceMapper(function (name) {
                     return name;
-                })
-                .addMethods({
-                    init: function () {}
                 }),
             instance;
 
@@ -45,6 +42,21 @@
 
         strictEqual(MyClass.create('foo'), instance,
             "should return the same instance on subsequent instantiation");
+    });
+
+    test("Opting out of memoization", function () {
+        var MyClass = troop.Base.extend()
+                .setInstanceMapper(function (name) {
+                    return name !== 'bar' ? name : undefined;
+                }),
+            instance1 = MyClass.create('foo'),
+            instance2 = MyClass.create('bar'),
+            instance3 = MyClass.create('baz');
+
+        deepEqual(MyClass.instanceRegistry, {
+            foo: instance1,
+            baz: instance3
+        }, "should not register instance that returned undefined");
     });
 
     test("Surrogate instantiation", function () {
