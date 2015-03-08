@@ -1,6 +1,3 @@
-/**
- * Inheritance unit tests
- */
 /*global troop, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
 (function () {
     "use strict";
