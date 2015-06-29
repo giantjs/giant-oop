@@ -7,14 +7,22 @@ var globalNs = {};
 (function () {
     "use strict";
 
-    module("Surrogate");
+    module("Surrogate", {
+        setup: function () {
+            troop.testing = true;
+        },
+
+        teardown: function () {
+            troop.testing = false;
+        }
+    });
 
     test("Finding surrogate", function () {
         var ns = {};
 
         ns.base = troop.Base.extend()
             .addSurrogate(ns, 'child', function (test) {
-                ok("should invoke surrogate handler");
+                ok("should invoke surrogate filter");
                 if (test === 'test') {
                     return true;
                 }
@@ -49,7 +57,7 @@ var globalNs = {};
             })
             .addSurrogate(ns, 'child', function (originalArg, extraArg) {
                 deepEqual(Array.prototype.slice.call(arguments), ['bar', 'foo'],
-                    "should pass arguments returned by preparation handler to surrogate handler");
+                    "should pass arguments returned by preparation handler to surrogate filter");
                 return originalArg === 'bar';
             });
 
@@ -74,9 +82,7 @@ var globalNs = {};
                 child: child
             };
 
-        globalNs.child = child;
-
-        base.addSurrogate(ns, 'child', filter);
+        strictEqual(base.addSurrogate(ns, 'child', filter), base, "should be chainable");
 
         deepEqual(base.surrogateInfo.descriptors, [
             {
@@ -85,5 +91,35 @@ var globalNs = {};
                 filter   : filter
             }
         ], "should set descriptor object for surrogate");
+    });
+
+    test("Adding surrogate to memoized class", function () {
+        expect(1);
+
+        var base = troop.Base.extend()
+                .setInstanceMapper(function () {
+                    return 'singleton';
+                })
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            child = base.extend()
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            ns = {
+                base : base,
+                child: child
+            };
+
+        base.addMocks({
+            clearInstanceRegistry: function () {
+                ok(true, "should clear instance registry");
+            }
+        });
+
+        base.addSurrogate(ns, 'child', function () {});
     });
 }());

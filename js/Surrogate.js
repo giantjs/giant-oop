@@ -126,7 +126,13 @@
                 .isString(className, "Invalid class name")
                 .isFunction(filter, "Invalid filter function");
 
+            if (hOP.call(this, 'instanceRegistry')) {
+                // clearing cached instances making sure the surrogate will not be bypassed
+                this.clearInstanceRegistry();
+            }
+
             if (!hOP.call(this, 'surrogateInfo')) {
+                // initializing surrogate info container
                 troop.Surrogate.initSurrogates.call(this);
             }
 
