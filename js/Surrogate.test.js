@@ -4,14 +4,22 @@ var globalNs = {};
 (function () {
     "use strict";
 
-    module("Surrogate");
+    module("Surrogate", {
+        setup: function () {
+            troop.testing = true;
+        },
+
+        teardown: function () {
+            troop.testing = false;
+        }
+    });
 
     test("Finding surrogate", function () {
         var ns = {};
 
         ns.base = troop.Base.extend()
             .addSurrogate(ns, 'child', function (test) {
-                ok("Filter triggered");
+                ok("should invoke surrogate filter");
                 if (test === 'test') {
                     return true;
                 }
@@ -19,17 +27,19 @@ var globalNs = {};
 
         ns.child = ns.base.extend();
 
-        equal(troop.Surrogate.getSurrogate.call(ns.base, 'test'), ns.child, "Arguments fit surrogate");
-        equal(troop.Surrogate.getSurrogate.call(ns.base, 'blah'), ns.base, "Arguments don't fit a surrogate");
+        equal(troop.Surrogate.getSurrogate.call(ns.base, 'test'), ns.child,
+            "should return subclass instance when arguments fit condition");
+        equal(troop.Surrogate.getSurrogate.call(ns.base, 'blah'), ns.base,
+            "should return instance of original class when arguments don't fit conditions");
     });
 
     test("Surrogate preparation", function () {
-        expect(3);
+        expect(2);
 
         var base = troop.Base.extend()
                 .addMethods({
-                    init: function (bar) {
-                        equal(arguments.length, 1, "Original argument list passed to init");
+                    init: function () {
+                        equal(arguments.length, 1, "should pass original ctr arguments to init");
                     }
                 }),
             child = base.extend(),
@@ -39,51 +49,74 @@ var globalNs = {};
             };
 
         base
-            .prepareSurrogates(function (bar) {
-                return [bar, 'foo'];
+            .prepareSurrogates(function (originalArg) {
+                return [originalArg, 'foo'];
             })
-            .addSurrogate(ns, 'child', function (bar, extry) {
-                equal(extry, 'foo', "Preparation handler result added");
-                equal(bar, 'bar', "Constructor argument ok");
-                return bar === 'bar';
+            .addSurrogate(ns, 'child', function (originalArg, extraArg) {
+                deepEqual(Array.prototype.slice.call(arguments), ['bar', 'foo'],
+                    "should pass arguments returned by preparation handler to surrogate filter");
+                return originalArg === 'bar';
             });
 
         base.create('bar');
     });
 
     test("Surrogate addition", function () {
-        var filter = function () {},
+        var filter = function () {
+            },
             base = troop.Base.extend()
                 .addMethods({
-                    init: function () {}
+                    init: function () {
+                    }
                 }),
             child = base.extend()
                 .addMethods({
-                    init: function () {}
+                    init: function () {
+                    }
                 }),
             ns = {
                 base : base,
                 child: child
             };
 
-        globalNs.child = child;
+        strictEqual(base.addSurrogate(ns, 'child', filter), base, "should be chainable");
 
-        ok(!base.hasOwnProperty('surrogates'), "Class doesn't have surrogates");
+        deepEqual(base.surrogateInfo.descriptors, [
+            {
+                namespace: ns,
+                className: 'child',
+                filter   : filter
+            }
+        ], "should set descriptor object for surrogate");
+    });
 
-        base.addSurrogate(ns, 'child', filter);
+    test("Adding surrogate to memoized class", function () {
+        expect(1);
 
-        equal(base.surrogateInfo.descriptors.length, 1, "New number of surrogates");
+        var base = troop.Base.extend()
+                .setInstanceMapper(function () {
+                    return 'singleton';
+                })
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            child = base.extend()
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            ns = {
+                base : base,
+                child: child
+            };
 
-        deepEqual(
-            base.surrogateInfo.descriptors,
-            [
-                {
-                    namespace: ns,
-                    className: 'child',
-                    filter   : filter
-                }
-            ],
-            "Surrogate info"
-        );
+        base.addMocks({
+            clearInstanceRegistry: function () {
+                ok(true, "should clear instance registry");
+            }
+        });
+
+        base.addSurrogate(ns, 'child', function () {});
     });
 }());
