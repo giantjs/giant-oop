@@ -4,21 +4,21 @@ module.exports = function (grunt) {
 
     var params = {
         files: [
-            'js/namespace.js',
-            'js/Feature.js',
-            'js/Base.js',
-            'js/Memoization.js',
-            'js/Surrogate.js',
-            'js/Instantiation.js',
-            'js/Properties.js',
-            'js/AmendUtils.js',
-            'js/BuiltInUtils.js',
-            'js/Postpone.js',
-            'js/exports.js'
+            'src/namespace.js',
+            'src/Feature.js',
+            'src/Base.js',
+            'src/Memoization.js',
+            'src/Surrogate.js',
+            'src/Instantiation.js',
+            'src/Properties.js',
+            'src/AmendUtils.js',
+            'src/BuiltInUtils.js',
+            'src/Postpone.js',
+            'src/exports.js'
         ],
 
         test: [
-            'js/jsTestDriver.conf'
+            'src/jsTestDriver.conf'
         ],
 
         globals: {}
