@@ -3,6 +3,6 @@
 /** @namespace */
 var giant = giant || require('giant-namespace');
 
-if (module.exports) {
+if (typeof require === 'function') {
     require('giant-assertion');
 }
