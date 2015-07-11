@@ -1,11 +1,11 @@
-/*global dessert, troop, console */
+/*global giant, giant, console */
 (function () {
     "use strict";
 
     var hOP = Object.prototype.hasOwnProperty,
-        validators = dessert.validators;
+        validators = giant.validators;
 
-    dessert.addTypes(/** @lends dessert */{
+    giant.addTypes(/** @lends giant */{
         /**
          * Checks whether host object has propertyName defined as its
          * own property.
@@ -63,7 +63,7 @@
      * The Troop base class uses these methods internally. They are exposed however due to their usefulness in testing.
      * @class
      */
-    troop.Properties = {
+    giant.Properties = {
         /**
          * Retrieves the object from the host's prototype chain that owns the specified property.
          * @param {string} propertyName
@@ -126,7 +126,7 @@
 
         /**
          * Adds single value property to the context.
-         * @this {troop.Base}
+         * @this {giant.Base}
          * @param {string} propertyName Property name.
          * @param value {*} Property value to be assigned.
          * @param {boolean} [isWritable]
@@ -134,7 +134,7 @@
          * @param {boolean} [isConfigurable]
          */
         addProperty: function (propertyName, value, isWritable, isEnumerable, isConfigurable) {
-            dessert
+            giant
                 .isString(propertyName, "Invalid property name")
                 .isBooleanOptional(isWritable)
                 .isBooleanOptional(isEnumerable)
@@ -142,7 +142,7 @@
 
             Object.defineProperty(this, propertyName, {
                 value       : value,
-                writable    : isWritable || troop.messy,
+                writable    : isWritable || giant.messy,
                 enumerable  : isEnumerable,
                 configurable: isConfigurable
             });
@@ -150,7 +150,7 @@
 
         /**
          * Adds single accessor property to the context.
-         * @this {troop.Base}
+         * @this {giant.Base}
          * @param {string} propertyName Property name.
          * @param {function} [getter] Property getter.
          * @param {function} [setter] Property setter.
@@ -158,7 +158,7 @@
          * @param {boolean} [isConfigurable]
          */
         addAccessor: function (propertyName, getter, setter, isEnumerable, isConfigurable) {
-            dessert
+            giant
                 .isString(propertyName, "Invalid property name")
                 .isFunctionOptional(getter)
                 .isFunctionOptional(setter)
@@ -175,12 +175,12 @@
 
         /**
          * Adds a block of properties to the context having the specified attributes.
-         * @this {troop.Base}
+         * @this {giant.Base}
          * @param {object|function} properties Property object or its generator function.
          * @param {boolean} [isWritable]
          * @param {boolean} [isEnumerable]
          * @param {boolean} [isConfigurable]
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         addProperties: function (properties, isWritable, isEnumerable, isConfigurable) {
             var propertyNames = Object.keys(properties),
@@ -189,7 +189,7 @@
             for (i = 0; i < propertyNames.length; i++) {
                 // making sure property name is available
                 propertyName = propertyNames[i];
-                dessert.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
+                giant.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
 
                 // adding accessor / property
                 property = properties[propertyName];
@@ -216,54 +216,54 @@
         }
     };
 
-    var self = troop.Properties;
+    var self = giant.Properties;
 
-    troop.Base.addMethods(/** @lends troop.Base# */{
+    giant.Base.addMethods(/** @lends giant.Base# */{
         /**
          * Adds a block of public read-only methods to the class it's called on.
-         * When troop.testing is on, methods will be placed on the class differently than other properties,
+         * When giant.testing is on, methods will be placed on the class differently than other properties,
          * therefore it is important to use .addMethods and .addPrivateMethods for method addition.
          * @param {object} methods Name - value pairs of methods to apply. Values must be functions,
          * or objects implementing a pair of get and set functions.
          * @example
-         * var myClass = troop.extend()
+         * var myClass = giant.extend()
          *    .addMethods({
          *        foo: function () {alert("Foo");},
          *        bar: {get: function () {return "Bar";}
          *    });
-         * @returns {troop.Base}
-         * @memberOf troop.Base
+         * @returns {giant.Base}
+         * @memberOf giant.Base
          */
         addMethods: function (methods) {
-            dessert.isAllFunctions(methods);
+            giant.isAllFunctions(methods);
 
-            self.addProperties.call(troop.Base.getTarget.call(this), methods, false, true, false);
+            self.addProperties.call(giant.Base.getTarget.call(this), methods, false, true, false);
 
             return this;
         },
 
         /**
          * Adds a block of private (non-enumerable) read-only methods to the class it's called on.
-         * Method names must match the private prefix rule set by `troop.privatePrefix`.
-         * When troop.testing is on, methods will be placed on the class differently than other properties,
+         * Method names must match the private prefix rule set by `giant.privatePrefix`.
+         * When giant.testing is on, methods will be placed on the class differently than other properties,
          * therefore it is important to use .addMethods and .addPrivateMethods for method addition.
          * @param {object} methods Name - value pairs of methods to apply. Values must be functions,
          * or objects implementing a pair of get and set functions.
          * @example
-         * var myClass = troop.extend()
+         * var myClass = giant.extend()
          *    .addMethods({
          *        _foo: function () {alert("Foo");},
          *        _bar: {get: function () {return "Bar";}
          *    });
-         * @returns {troop.Base}
-         * @memberOf troop.Base
+         * @returns {giant.Base}
+         * @memberOf giant.Base
          */
         addPrivateMethods: function (methods) {
-            dessert
+            giant
                 .isAllFunctions(methods, "Some private methods are not functions.")
-                .isAllPrefixed(methods, troop.privatePrefix, "Some private method names do not match the required prefix.");
+                .isAllPrefixed(methods, giant.privatePrefix, "Some private method names do not match the required prefix.");
 
-            self.addProperties.call(troop.Base.getTarget.call(this), methods, false, false, false);
+            self.addProperties.call(giant.Base.getTarget.call(this), methods, false, false, false);
 
             return this;
         },
@@ -277,31 +277,31 @@
          * class.
          * Trait addition preserves ES5 attributes of copied properties, but skips property named `init`.
          * Each trait must be initialized manually.
-         * @param {object|troop.Base} trait Trait object
+         * @param {object|giant.Base} trait Trait object
          * @example
-         * MyTrait = troop.Base.extend()
+         * MyTrait = giant.Base.extend()
          *    .addMethods({
          *        init: function () { alert("trait init"); }
          *        foo: function () { alert("hello"); }
          *    });
-         * MyClass = troop.Base.extend()
+         * MyClass = giant.Base.extend()
          *    .addTrait(MyTrait)
          *    .addMethods({ init: function () { MyTrait.init.call(this); } });
          * myInstance = MyClass.create(); // alerts "trait init"
          * myInstance.foo(); // alerts "hello"
-         * @returns {troop.Base}
-         * @memberOf troop.Base
+         * @returns {giant.Base}
+         * @memberOf giant.Base
          */
         addTrait: function (trait) {
-            dessert.isObject(trait, "Invalid trait descriptor");
+            giant.isObject(trait, "Invalid trait descriptor");
 
             // obtaining all property names (including non-enumerable)
-            // for troop classes, only those above the base class will be considered
-            var hostTarget = troop.Base.getTarget.call(this),
-                propertyNames = troop.Properties.getPropertyNames(
+            // for giant classes, only those above the base class will be considered
+            var hostTarget = giant.Base.getTarget.call(this),
+                propertyNames = giant.Properties.getPropertyNames(
                     trait,
-                    troop.Base.isBaseOf(trait) ?
-                    troop.Base :
+                    giant.Base.isBaseOf(trait) ?
+                    giant.Base :
                     Object.prototype
                 ),
                 i, propertyName, property;
@@ -315,7 +315,7 @@
                 }
 
                 // trait properties must not collide w/ host's
-                dessert.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
+                giant.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
 
                 // copying property over w/ original attributes
                 property = trait[propertyName];
@@ -324,7 +324,7 @@
                     hostTarget :
                     this,
                     propertyName,
-                    troop.Properties.getPropertyDescriptor(trait, propertyName)
+                    giant.Properties.getPropertyDescriptor(trait, propertyName)
                 );
             }
 
@@ -334,10 +334,10 @@
         /**
          * Adds trait to current class then extends it, allowing subsequently added methods to override
          * the trait's methods.
-         * @param {object|troop.Base} trait
-         * @returns {troop.Base}
-         * @see troop.Base.addTrait
-         * @memberOf troop.Base
+         * @param {object|giant.Base} trait
+         * @returns {giant.Base}
+         * @see giant.Base.addTrait
+         * @memberOf giant.Base
          */
         addTraitAndExtend: function (trait) {
             return this
@@ -348,7 +348,7 @@
         /**
          * Adds a block of public (enumerable) writable properties to the current class or instance.
          * @param {object} properties Name-value pairs of properties.
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         addPublic: function (properties) {
             self.addProperties.call(this, properties, true, true, false);
@@ -357,12 +357,12 @@
 
         /**
          * Adds a block of private (non-enumerable) writable properties to the current class or instance.
-         * Property names must match the private prefix rule set by `troop.privatePrefix`.
+         * Property names must match the private prefix rule set by `giant.privatePrefix`.
          * @param {object} properties Name-value pairs of properties.
-         * @returns {troop.base}
+         * @returns {giant.base}
          */
         addPrivate: function (properties) {
-            dessert.isAllPrefixed(properties, troop.privatePrefix, "Some private property names do not match the required prefix.");
+            giant.isAllPrefixed(properties, giant.privatePrefix, "Some private property names do not match the required prefix.");
 
             self.addProperties.call(this, properties, true, false, false);
 
@@ -372,7 +372,7 @@
         /**
          * Adds a block of public (enumerable) constant (read-only) properties to the current class or instance.
          * @param {object} properties Name-value pairs of constant properties
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         addConstants: function (properties) {
             self.addProperties.call(this, properties, false, true, false);
@@ -381,12 +381,12 @@
 
         /**
          * Adds a block of private (non-enumerable) constant (read-only) properties to the current class or instance.
-         * Property names must match the private prefix rule set by `troop.privatePrefix`.
+         * Property names must match the private prefix rule set by `giant.privatePrefix`.
          * @param {object} properties Name-value pairs of private constant properties.
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         addPrivateConstants: function (properties) {
-            dessert.isAllPrefixed(properties, troop.privatePrefix, "Some private constant names do not match the required prefix.");
+            giant.isAllPrefixed(properties, giant.privatePrefix, "Some private constant names do not match the required prefix.");
 
             self.addProperties.call(this, properties, false, false, false);
 
@@ -398,7 +398,7 @@
          * Ties context to the object it was elevated to, so methods may be safely passed as event handlers.
          * @param {string} methodName Name of method to elevate.
          * @example
-         * ClassA = troop.Base.extend()
+         * ClassA = giant.Base.extend()
          *    .addMethods({
          *        init: function () {},
          *        foo: function () { alert(this.bar); }
@@ -412,20 +412,20 @@
          *     });
          * foo = ClassB.create().foo; // should lose context
          * foo(); // alerts "hello", for context was preserved
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         elevateMethod: function (methodName) {
-            dessert.isString(methodName, "Invalid method name");
+            giant.isString(methodName, "Invalid method name");
 
             var base = this.getBase(), // class or base class
                 baseMethod = base[methodName],
                 elevatedMethod;
 
-            dessert.isFunction(baseMethod, "Attempted to elevate non-method.", methodName);
+            giant.isFunction(baseMethod, "Attempted to elevate non-method.", methodName);
 
             elevatedMethod = {};
             elevatedMethod[methodName] = baseMethod.bind(this);
-            troop.Base.addMethods.call(this, elevatedMethod);
+            giant.Base.addMethods.call(this, elevatedMethod);
 
             return this;
         },
@@ -433,8 +433,8 @@
         /**
          * Elevates multiple methods. Method names are expected to be passed as individual arguments.
          * (In no particular order.)
-         * @returns {troop.Base}
-         * @see troop.Base#elevateMethod
+         * @returns {giant.Base}
+         * @see giant.Base#elevateMethod
          */
         elevateMethods: function () {
             var i, methodName;
@@ -449,8 +449,8 @@
          * Adds a block of public (enumerable) mock methods (read-only, but removable) to the current instance or class.
          * @param {object} methods Name-value pairs of methods. Values must be functions or getter-setter objects.
          * @example
-         * troop.testing = true;
-         * MyClass = troop.Base.extend()
+         * giant.testing = true;
+         * MyClass = giant.Base.extend()
          *      .addMethods({
          *          init: function () {},
          *          foo: function () {}
@@ -460,12 +460,12 @@
          *     foo: function () {return 'FOO';}
          * });
          * myInstance.foo() // returns 'FOO'
-         * @see troop.Base#addMethods
-         * @returns {troop.Base}
+         * @see giant.Base#addMethods
+         * @returns {giant.Base}
          */
         addMocks: function (methods) {
-            dessert
-                .assert(troop.testing, "Troop is not in testing mode.")
+            giant
+                .assert(giant.testing, "Troop is not in testing mode.")
                 .isAllFunctions(methods, "Some mock methods are not functions.");
 
             self.addProperties.call(this, methods, false, true, true);
@@ -475,7 +475,7 @@
 
         /**
          * Removes all mock methods from the current class or instance.
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         removeMocks: function () {
             var propertyNames = Object.keys(this),
@@ -499,7 +499,7 @@
         }
     });
 
-    troop.Base.addPublic.call(troop, /** @lends troop */{
+    giant.Base.addPublic.call(giant, /** @lends giant */{
         /**
          * Prefix applied to names of private properties and methods.
          * @type {string}

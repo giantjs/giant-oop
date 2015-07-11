@@ -1,4 +1,4 @@
-/*global dessert, troop */
+/*global giant, giant */
 (function () {
     "use strict";
 
@@ -8,12 +8,12 @@
      * @class
      * @ignore
      */
-    troop.Memoization = {
+    giant.Memoization = {
         /**
          * Adds instance to registry. Must be called on class object!
-         * @this {troop.Base} Troop-based class
+         * @this {giant.Base} Troop-based class
          * @param {string} key Instance key
-         * @param {troop.Base} instance Instance to be memoized
+         * @param {giant.Base} instance Instance to be memoized
          */
         addInstance: function (key, instance) {
             this.instanceRegistry[key] = instance;
@@ -22,7 +22,7 @@
         /**
          * Fetches a memoized instance from the registry.
          * @param {string} key
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         getInstance: function (key) {
             var instanceRegistry = this.instanceRegistry;
@@ -39,12 +39,12 @@
         }
     };
 
-    troop.Base.addMethods(/** @lends troop.Base */{
+    giant.Base.addMethods(/** @lends giant.Base */{
         /**
          * Assigns instance key calculator to class. Makes class memoized.
          * @param {function} instanceMapper Instance key mapper function.
          * @example
-         * var MyClass = troop.Base.extend()
+         * var MyClass = giant.Base.extend()
          *     .setInstanceMapper(function (arg) {return '' + arg;})
          *     .addMethods({
          *         init: function () {}
@@ -53,15 +53,15 @@
          *     myInstance2 = MyClass.create('foo');
          * MyClass.isMemoized() // true
          * myInstance 1 === myInstance2 // true
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         setInstanceMapper: function (instanceMapper) {
-            dessert
+            giant
                 .isFunction(instanceMapper, "Invalid instance key calculator")
                 .assert(!hOP.call(this, 'instanceMapper'), "Instance mapper already set");
 
             this
-                .addMethods(/** @lends troop.Base */{
+                .addMethods(/** @lends giant.Base */{
                     /**
                      * Maps constructor arguments to instance keys in the registry.
                      * Added to class via .setInstanceMapper().
@@ -70,7 +70,7 @@
                      */
                     instanceMapper: instanceMapper
                 })
-                .addPublic(/** @lends troop.Base */{
+                .addPublic(/** @lends giant.Base */{
                     /**
                      * Lookup registry for instances of the memoized class.
                      * Has to be own property as child classes may put their instances here, too.
@@ -86,7 +86,7 @@
         /**
          * Tells whether the current class (or any of its base classes) is memoized.
          * @returns {boolean}
-         * @see troop.Base.setInstanceMapper
+         * @see giant.Base.setInstanceMapper
          */
         isMemoized: function () {
             return typeof this.instanceMapper === 'function';
@@ -95,11 +95,11 @@
         /**
          * Clears instance registry. After the registry is cleared, a new set of instances will be created
          * for distinct constructor arguments.
-         * @returns {troop.Base}
-         * @see troop.Base.setInstanceMapper
+         * @returns {giant.Base}
+         * @see giant.Base.setInstanceMapper
          */
         clearInstanceRegistry: function () {
-            dessert.assert(hOP.call(this, 'instanceRegistry'), "Class doesn't own an instance registry");
+            giant.assert(hOP.call(this, 'instanceRegistry'), "Class doesn't own an instance registry");
             this.instanceRegistry = {};
             return this;
         }

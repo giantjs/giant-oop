@@ -1,4 +1,4 @@
-/*global troop, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
+/*global giant, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
 (function () {
     "use strict";
 
@@ -8,13 +8,13 @@
         var builtIn = {};
 
         raises(function () {
-            troop.extendBuiltIn(builtIn, {
+            giant.extendBuiltIn(builtIn, {
                 toFoo: 'foo'
             });
         }, "should raise exception for non-function extensions");
 
         raises(function () {
-            troop.extendBuiltIn(builtIn, {
+            giant.extendBuiltIn(builtIn, {
                 foo: function () {}
             });
         }, "should raise exception for non-conversion extensions");
@@ -23,7 +23,7 @@
             return 'foo' + this;
         }
 
-        troop.extendBuiltIn(builtIn, {
+        giant.extendBuiltIn(builtIn, {
             toFoo: toFoo
         });
 

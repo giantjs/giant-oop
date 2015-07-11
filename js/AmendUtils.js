@@ -1,4 +1,4 @@
-/*global dessert, troop */
+/*global giant, giant */
 (function () {
     "use strict";
 
@@ -6,7 +6,7 @@
      * @class
      * @ignore
      */
-    troop.AmendUtils = {
+    giant.AmendUtils = {
         /**
          * Retrieves amendments from postponed definition.
          * Returns empty array when argument is not property descriptor or descriptor has no amendments assigned.
@@ -14,7 +14,7 @@
          * @returns {Array}
          */
         getAmendments: function (propertyDescriptor) {
-            return dessert.validators.isSetterGetterDescriptor(propertyDescriptor) &&
+            return giant.validators.isSetterGetterDescriptor(propertyDescriptor) &&
                    propertyDescriptor.get.amendments ||
                    [];
         },
@@ -56,7 +56,7 @@
             if (amendments instanceof Array) {
                 for (i = 0; i < amendments.length; i++) {
                     amendment = amendments[i];
-                    amendment.modifier.apply(troop, amendment.args);
+                    amendment.modifier.apply(giant, amendment.args);
                 }
             }
         }

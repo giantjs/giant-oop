@@ -1,4 +1,4 @@
-/*global troop, module, test, ok, equal, deepEqual, expect, raises */
+/*global giant, module, test, ok, equal, deepEqual, expect, raises */
 var globalNs = {};
 
 (function () {
@@ -6,18 +6,18 @@ var globalNs = {};
 
     module("Surrogate", {
         setup: function () {
-            troop.testing = true;
+            giant.testing = true;
         },
 
         teardown: function () {
-            troop.testing = false;
+            giant.testing = false;
         }
     });
 
     test("Finding surrogate", function () {
         var ns = {};
 
-        ns.base = troop.Base.extend()
+        ns.base = giant.Base.extend()
             .addSurrogate(ns, 'child', function (test) {
                 ok("should invoke surrogate filter");
                 if (test === 'test') {
@@ -27,16 +27,16 @@ var globalNs = {};
 
         ns.child = ns.base.extend();
 
-        equal(troop.Surrogate.getSurrogate.call(ns.base, 'test'), ns.child,
+        equal(giant.Surrogate.getSurrogate.call(ns.base, 'test'), ns.child,
             "should return subclass instance when arguments fit condition");
-        equal(troop.Surrogate.getSurrogate.call(ns.base, 'blah'), ns.base,
+        equal(giant.Surrogate.getSurrogate.call(ns.base, 'blah'), ns.base,
             "should return instance of original class when arguments don't fit conditions");
     });
 
     test("Surrogate preparation", function () {
         expect(2);
 
-        var base = troop.Base.extend()
+        var base = giant.Base.extend()
                 .addMethods({
                     init: function () {
                         equal(arguments.length, 1, "should pass original ctr arguments to init");
@@ -64,7 +64,7 @@ var globalNs = {};
     test("Surrogate addition", function () {
         var filter = function () {
             },
-            base = troop.Base.extend()
+            base = giant.Base.extend()
                 .addMethods({
                     init: function () {
                     }
@@ -93,7 +93,7 @@ var globalNs = {};
     test("Adding surrogate to memoized class", function () {
         expect(1);
 
-        var base = troop.Base.extend()
+        var base = giant.Base.extend()
                 .setInstanceMapper(function () {
                     return 'singleton';
                 })

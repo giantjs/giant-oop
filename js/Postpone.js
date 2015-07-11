@@ -1,12 +1,12 @@
-/*global dessert, troop */
+/*global giant, giant */
 (function () {
     "use strict";
 
     var hOP = Object.prototype.hasOwnProperty,
         slice = Array.prototype.slice,
-        validators = dessert.validators;
+        validators = giant.validators;
 
-    dessert.addTypes(/** @lends dessert */{
+    giant.addTypes(/** @lends giant */{
         /**
          * Determines whether a property descriptor is a getter-setter.
          * @param {object} propertyDescriptor
@@ -32,7 +32,7 @@
         }
     });
 
-    troop.Base.addMethods.call(troop, /** @lends troop */{
+    giant.Base.addMethods.call(giant, /** @lends giant */{
         /**
          * Postpones a property definition on the specified object until first access.
          * Initially assigns a special getter to the property, then, when the property is accessed for the first time,
@@ -44,18 +44,18 @@
          * plus all extra arguments passed to .postpone().
          * @example
          * var obj = {};
-         * troop.postpone(obj, 'foo', function () {
+         * giant.postpone(obj, 'foo', function () {
          *    return "bar";
          * });
          * obj.foo // runs generator and alerts "bar"
          */
         postpone: function (host, propertyName, generator) {
-            dessert
+            giant
                 .isObject(host, "Host is not an Object")
                 .isString(propertyName, "Invalid property name")
                 .isFunction(generator, "Invalid generator function");
 
-            var Amendments = troop.AmendUtils,
+            var Amendments = giant.AmendUtils,
                 propertyDescriptorBefore = Object.getOwnPropertyDescriptor(host, propertyName),
                 propertyDescriptorAfter,
                 generatorArguments = slice.call(arguments);
@@ -133,17 +133,17 @@
          * plus all extra arguments passed to .amendPostponed(). Return value is discarded.
          * @example
          * var ns = {};
-         * troop.postpone(ns, 'foo', function () {
+         * giant.postpone(ns, 'foo', function () {
          *  ns.foo = {hello: "World"};
          * });
          * //...
-         * troop.amendPostponed(ns, 'foo', function () {
+         * giant.amendPostponed(ns, 'foo', function () {
          *  ns.foo.howdy = "Fellas";
          * });
          * // howdy is not added until first access to `ns.foo`
          */
         amendPostponed: function (host, propertyName, modifier) {
-            dessert
+            giant
                 .isObject(host, "Host is not an Object")
                 .isString(propertyName, "Invalid property name")
                 .isFunction(modifier, "Invalid generator function");
@@ -158,7 +158,7 @@
                 // there is no value nor setter-getter defined on property
                 // we're trying to amend before postponing
                 // postponing with dummy generator function
-                troop.postpone(host, propertyName, function () {
+                giant.postpone(host, propertyName, function () {
                 });
 
                 // re-evaluating property descriptor
@@ -168,12 +168,12 @@
             if (validators.isSetterGetterDescriptor(propertyDescriptor)) {
                 // property is setter-getter, ie. unresolved
                 // adding generator to amendment functions
-                troop.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
+                giant.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
             } else if (propertyDescriptor) {
                 // property is value, assumed to be a resolved postponed property
 
                 // calling modifier immediately
-                modifier.apply(troop, modifierArguments);
+                modifier.apply(giant, modifierArguments);
             }
         }
     });

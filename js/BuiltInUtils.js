@@ -1,4 +1,4 @@
-/*global dessert, troop */
+/*global giant, giant */
 (function () {
     "use strict";
 
@@ -10,11 +10,11 @@
      * @param {object} builtInPrototype prototype object to extend.
      * @param {object} methods Override methods. All method names must be prefixed with "to".
      */
-    troop.extendBuiltIn = function (builtInPrototype, methods) {
-        dessert
+    giant.extendBuiltIn = function (builtInPrototype, methods) {
+        giant
             .isAllFunctions(methods, "Invalid methods")
             .isAllPrefixed(methods, 'to', "Invalid method names");
 
-        troop.Properties.addProperties.call(builtInPrototype, methods, false, false, false);
+        giant.Properties.addProperties.call(builtInPrototype, methods, false, false, false);
     };
 }());

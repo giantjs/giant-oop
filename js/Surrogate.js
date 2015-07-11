@@ -1,4 +1,4 @@
-/*global dessert, troop */
+/*global giant, giant */
 (function () {
     "use strict";
 
@@ -8,13 +8,13 @@
      * @class
      * @ignore
      */
-    troop.Surrogate = {
+    giant.Surrogate = {
         /**
          * Adds surrogates buffer to class.
-         * @this {troop.Base}
+         * @this {giant.Base}
          */
         initSurrogates: function () {
-            this.addConstants(/** @lends troop.Base */{
+            this.addConstants(/** @lends giant.Base */{
                 /**
                  * Container for surrogate info. Added to class via .initSurrogates().
                  * @type {object}
@@ -35,8 +35,8 @@
 
         /**
          * Retrieves first surrogate fitting constructor arguments.
-         * @this {troop.Base}
-         * @returns {troop.Base}
+         * @this {giant.Base}
+         * @returns {giant.Base}
          */
         getSurrogate: function () {
             /**
@@ -72,20 +72,20 @@
         }
     };
 
-    troop.Base.addMethods(/** @lends troop.Base */{
+    giant.Base.addMethods(/** @lends giant.Base */{
         /**
          * Adds a handler to be called before evaluating any of the surrogate filters.
          * The specified handler receives the original constructor arguments and is expected to
          * return a modified argument list (array) that will be passed to the surrogate filters.
          * @param {function} handler
-         * @returns {troop.Base}
-         * @see troop.Base.addSurrogate
+         * @returns {giant.Base}
+         * @see giant.Base.addSurrogate
          */
         prepareSurrogates: function (handler) {
-            dessert.isFunction(handler, "Invalid handler");
+            giant.isFunction(handler, "Invalid handler");
 
             if (!hOP.call(this, 'surrogateInfo')) {
-                troop.Surrogate.initSurrogates.call(this);
+                giant.Surrogate.initSurrogates.call(this);
             }
 
             this.surrogateInfo.preparationHandler = handler;
@@ -103,7 +103,7 @@
          * and class name fits the arguments.
          * @example
          * var ns = {}; // namespace
-         * ns.Horse = troop.Base.extend()
+         * ns.Horse = giant.Base.extend()
          *     .prepareSurrogates(function (height) {
          *         return [height < 5]; // isPony
          *     })
@@ -115,10 +115,10 @@
          *     .addMethods({ init: function () {} });
          * var myHorse = ns.Horse.create(10), // instance of ns.Horse
          *     myPony = ns.Horse.create(3); // instance of ns.Pony
-         * @returns {troop.Base}
+         * @returns {giant.Base}
          */
         addSurrogate: function (namespace, className, filter) {
-            dessert
+            giant
                 .isObject(namespace, "Invalid namespace object")
                 .isString(className, "Invalid class name")
                 .isFunction(filter, "Invalid filter function");
@@ -130,7 +130,7 @@
 
             if (!hOP.call(this, 'surrogateInfo')) {
                 // initializing surrogate info container
-                troop.Surrogate.initSurrogates.call(this);
+                giant.Surrogate.initSurrogates.call(this);
             }
 
             this.surrogateInfo.descriptors.push({

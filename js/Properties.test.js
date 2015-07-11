@@ -1,11 +1,11 @@
-/*global phil, dessert, troop, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
+/*global phil, giant, giant, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
 (function () {
     "use strict";
 
     module("Properties");
 
     test("Prefix restriction assertion", function () {
-        var v = dessert.validators;
+        var v = giant.validators;
 
         equal(
             v.isAllPrefixed({foo: 'hello', bar: 'world'}, 'f'),
@@ -21,7 +21,7 @@
     });
 
     test("Accessor validation", function () {
-        var v = dessert.validators,
+        var v = giant.validators,
             derived = Object.create({});
 
         derived.get = function () {};
@@ -39,7 +39,7 @@
     });
 
     test("Owner detection", function () {
-        var ClassA = troop.Base.extend()
+        var ClassA = giant.Base.extend()
                 .addPublic({
                     foo: 'bar'
                 })
@@ -53,15 +53,15 @@
             ClassC = ClassB.extend(),
             instance = ClassC.create();
 
-        equal(typeof troop.Properties.getOwnerOf(instance, 'invalid'), 'undefined');
-        strictEqual(troop.Properties.getOwnerOf(instance, 'foo'), ClassA);
-        strictEqual(troop.Properties.getOwnerOf(instance, 'init'), ClassA);
-        strictEqual(troop.Properties.getOwnerOf(instance, 'hello'), ClassB);
-        strictEqual(troop.Properties.getOwnerOf(ClassA, 'foo'), ClassA);
+        equal(typeof giant.Properties.getOwnerOf(instance, 'invalid'), 'undefined');
+        strictEqual(giant.Properties.getOwnerOf(instance, 'foo'), ClassA);
+        strictEqual(giant.Properties.getOwnerOf(instance, 'init'), ClassA);
+        strictEqual(giant.Properties.getOwnerOf(instance, 'hello'), ClassB);
+        strictEqual(giant.Properties.getOwnerOf(ClassA, 'foo'), ClassA);
     });
 
     test("Property descriptor", function () {
-        var ClassA = troop.Base.extend()
+        var ClassA = giant.Base.extend()
                 .addPublic({
                     foo: 'bar'
                 })
@@ -75,23 +75,23 @@
             ClassC = ClassB.extend(),
             instance = ClassC.create();
 
-        equal(typeof troop.Properties.getPropertyDescriptor(instance, 'invalid'), 'undefined');
+        equal(typeof giant.Properties.getPropertyDescriptor(instance, 'invalid'), 'undefined');
         deepEqual(
-            troop.Properties.getPropertyDescriptor(instance, 'foo'),
+            giant.Properties.getPropertyDescriptor(instance, 'foo'),
             Object.getOwnPropertyDescriptor(ClassA, 'foo')
         );
         deepEqual(
-            troop.Properties.getPropertyDescriptor(instance, 'init'),
+            giant.Properties.getPropertyDescriptor(instance, 'init'),
             Object.getOwnPropertyDescriptor(ClassA, 'init')
         );
         deepEqual(
-            troop.Properties.getPropertyDescriptor(instance, 'hello'),
+            giant.Properties.getPropertyDescriptor(instance, 'hello'),
             Object.getOwnPropertyDescriptor(ClassB, 'hello')
         );
     });
 
     test("Property names", function () {
-        var ClassA = troop.Base.extend()
+        var ClassA = giant.Base.extend()
                 .addPublic({
                     foo: 'bar'
                 })
@@ -106,11 +106,11 @@
             instance = ClassC.create();
 
         deepEqual(
-            troop.Properties.getPropertyNames(instance).sort(),
+            giant.Properties.getPropertyNames(instance).sort(),
             ["_hello","addConstants","addMethods","addMocks","addPrivate","addPrivateConstants","addPrivateMethods","addPublic","addSurrogate","addTrait","addTraitAndExtend","clearInstanceRegistry","create","elevateMethod","elevateMethods","extend","foo","getBase","getTarget","init","instanceOf","isA","isBaseOf","isMemoized","prepareSurrogates","removeMocks","setInstanceMapper"]
         );
         deepEqual(
-            troop.Properties.getPropertyNames(instance, troop.Base).sort(),
+            giant.Properties.getPropertyNames(instance, giant.Base).sort(),
             ["_hello","foo","init"]
         );
     });
@@ -119,23 +119,23 @@
         var tmp;
 
         tmp = {};
-        troop.Properties.addProperties.call(tmp, {a: 'foo', b: 'bar'}, true, true, true);
+        giant.Properties.addProperties.call(tmp, {a: 'foo', b: 'bar'}, true, true, true);
         equal(tmp.a, 'foo', "Property added through object");
 
         raises(function () {
-            troop.Properties.addProperties.call(tmp, {a: 'blah'});
+            giant.Properties.addProperties.call(tmp, {a: 'blah'});
         }, "Property name conflict");
 
         if (phil.hasGetterSetter()) {
             // environments where getters and setters are not available
             // can only work with static getter property descriptors
             tmp = {};
-            troop.Properties.addProperties.call(tmp, {a: {get: function () {return this.b;}}, b: 'foo'});
+            giant.Properties.addProperties.call(tmp, {a: {get: function () {return this.b;}}, b: 'foo'});
             equal(tmp.a, 'foo', "Property added with getter");
         }
 
         tmp = {};
-        troop.Properties.addProperties.call(tmp, {a: null});
+        giant.Properties.addProperties.call(tmp, {a: null});
         equal(tmp.a, null, "Null property added");
     });
 
@@ -143,7 +143,7 @@
         var tmp = {},
             descriptor;
 
-        troop.Properties.addProperties.call(tmp, {
+        giant.Properties.addProperties.call(tmp, {
                 test: function () {}
             },
             true,
@@ -160,7 +160,7 @@
     });
 
     test("Adding traits", function () {
-        var hasPropertyAttributes = troop.Feature.hasPropertyAttributes(),
+        var hasPropertyAttributes = giant.Feature.hasPropertyAttributes(),
             base = {},
             trait = Object.create(base),
             destination;
@@ -187,7 +187,7 @@
         });
 
         destination = Object.create(base);
-        troop.Base.addTrait.call(destination, trait);
+        giant.Base.addTrait.call(destination, trait);
 
         ok(!destination.hasOwnProperty('init'), "Init was not copied over");
         ok(destination.hasOwnProperty('foo'), "Regular property gets copied over");
@@ -203,13 +203,13 @@
         );
 
         raises(function () {
-            troop.Base.addTrait.call(destination, trait);
+            giant.Base.addTrait.call(destination, trait);
         }, "Re-adding trait causes collision");
 
-        troop.testing = true;
+        giant.testing = true;
 
         destination = Object.create(base);
-        troop.Base.addTrait.call(destination, trait);
+        giant.Base.addTrait.call(destination, trait);
 
         deepEqual(
             Object.getOwnPropertyDescriptor(Object.getPrototypeOf(destination), 'boo'),
@@ -222,13 +222,13 @@
             "Trait in testing mode"
         );
 
-        troop.testing = false;
+        giant.testing = false;
     });
 
     test("Trait integration", function () {
         expect(4);
 
-        var TraitBase = troop.Base.extend()
+        var TraitBase = giant.Base.extend()
                 .addPrivateMethods({
                     _hello: function () {
                         ok(true, "Private method called");
@@ -245,7 +245,7 @@
                         TraitBase.foo.call(this);
                     }
                 }),
-            MyClass = troop.Base.extend()
+            MyClass = giant.Base.extend()
                 .addTrait(TraitChild)
                 .addMethods({
                     init: function () {}
@@ -262,11 +262,11 @@
     test("Trait & extend", function () {
         expect(2);
 
-        troop.testing = true;
+        giant.testing = true;
 
-        var BaseClass = troop.Base.extend(),
+        var BaseClass = giant.Base.extend(),
             HostClass = BaseClass.extend(),
-            MyTrait = troop.Base.extend();
+            MyTrait = giant.Base.extend();
 
         BaseClass.addMocks({
             addTrait: function (trait) {
@@ -283,14 +283,14 @@
 
         BaseClass.removeMocks();
 
-        troop.testing = false;
+        giant.testing = false;
     });
 
     test("Adding methods", function () {
         var tmp = {},
             result;
 
-        result = troop.Base.addMethods.call(tmp, {
+        result = giant.Base.addMethods.call(tmp, {
             foo: function () { return 'foo'; }
         });
 
@@ -311,18 +311,18 @@
         equal(delta.toString(), 'foo', "Serialization invoked");
         equal(tmp.toString(), '[object Object]', "Built-in serializer");
 
-        troop.Base.addMethods.call(tmp, delta);
+        giant.Base.addMethods.call(tmp, delta);
 
         equal(typeof tmp.toString, 'function', "Override added");
         equal(tmp.toString(), 'foo', "Serialization invoked");
     });
 
     test("Flags not set", function () {
-        var hasPropertyAttributes = troop.Feature.hasPropertyAttributes(),
+        var hasPropertyAttributes = giant.Feature.hasPropertyAttributes(),
             tmp = {},
             descriptor;
 
-        troop.Properties.addProperties.call(tmp, {
+        giant.Properties.addProperties.call(tmp, {
             test: function () {}
         });
 
@@ -335,13 +335,13 @@
     });
 
     test("Messy", function () {
-        troop.messy = true;
+        giant.messy = true;
 
-        var hasPropertyAttributes = troop.Feature.hasPropertyAttributes(),
+        var hasPropertyAttributes = giant.Feature.hasPropertyAttributes(),
             tmp = {},
             descriptor;
 
-        troop.Properties.addProperties.call(tmp, {
+        giant.Properties.addProperties.call(tmp, {
             test: function () {}
         }, false, false, false);
 
@@ -352,7 +352,7 @@
         equal(descriptor.enumerable, !hasPropertyAttributes, "Enumerable");
         equal(descriptor.configurable, !hasPropertyAttributes, "Configurable");
 
-        troop.messy = false;
+        giant.messy = false;
     });
 
     test("Class assembly", function () {
@@ -360,16 +360,16 @@
 
         function testMethod() {}
 
-        troop.Base.addMethods.call(tmp, {
+        giant.Base.addMethods.call(tmp, {
             test: testMethod
         });
 
-        troop.Base.addConstants.call(tmp, {
+        giant.Base.addConstants.call(tmp, {
             foo: "foo"
         });
 
         raises(function () {
-            troop.Base.addPrivate.call(tmp, {
+            giant.Base.addPrivate.call(tmp, {
                 bar: "bar"
             });
         }, "Invalid private property");
@@ -385,12 +385,12 @@
     });
 
     test("Method elevation", function () {
-        var base = troop.Base.extend()
+        var base = giant.Base.extend()
                 .addMethods({test: function () {return this;}}),
             instance = Object.create(base);
 
         equal(instance.test, base.test, "Instance method same as class method");
-        troop.Base.elevateMethod.call(instance, 'test');
+        giant.Base.elevateMethod.call(instance, 'test');
         notEqual(instance.test, base.test, "Instance method differs from class method");
 
         var test = instance.test;
@@ -398,14 +398,14 @@
     });
 
     test("Multiple method elevation", function () {
-        var base = troop.Base.extend()
+        var base = giant.Base.extend()
                 .addMethods({
                     foo: function () {return this;},
                     bar: function () {return this;}
                 }),
             instance = Object.create(base);
 
-        troop.Base.elevateMethods.call(instance, 'foo', 'bar');
+        giant.Base.elevateMethods.call(instance, 'foo', 'bar');
         notEqual(instance.foo, base.foo, "should set instance level method (first)");
         notEqual(instance.bar, base.bar, "should set instance level method (second)");
     });
@@ -416,24 +416,24 @@
         function testMethod() {}
 
         raises(function () {
-            troop.Base.addMocks.call(tmp, {
+            giant.Base.addMocks.call(tmp, {
                 foo: testMethod
             });
         }, "Testing is not on");
 
-        troop.testing = true;
+        giant.testing = true;
 
-        troop.Base.addMocks.call(tmp, {
+        giant.Base.addMocks.call(tmp, {
             foo: testMethod
         });
 
-        troop.testing = false;
+        giant.testing = false;
 
         deepEqual(tmp, {
             foo: testMethod
         }, "Mock method added");
 
-        troop.Base.removeMocks.call(tmp);
+        giant.Base.removeMocks.call(tmp);
 
         deepEqual(tmp, {}, "Mock methods removed");
     });

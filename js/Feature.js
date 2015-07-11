@@ -1,4 +1,4 @@
-/*global troop */
+/*global giant */
 (function () {
     "use strict";
 
@@ -6,7 +6,7 @@
      * Implements methods to detect environment features relevant to OOP and testing.
      * @class
      */
-    troop.Feature = {
+    giant.Feature = {
         /**
          * Determines whether read-only properties may be covered up by assignment.
          * @returns {boolean}
@@ -63,11 +63,11 @@
      * Whether methods should be writable (environmental)
      * @type {boolean}
      */
-    troop.writable = !troop.Feature.canAssignToReadOnly();
+    giant.writable = !giant.Feature.canAssignToReadOnly();
 
     /**
      * Whether Troop is in testing mode (application state)
      * @type {boolean}
      */
-    troop.testing = false;
+    giant.testing = false;
 }());

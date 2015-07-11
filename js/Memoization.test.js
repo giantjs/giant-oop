@@ -1,4 +1,4 @@
-/*global troop, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
+/*global giant, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
 (function () {
     "use strict";
 
@@ -9,7 +9,7 @@
             return name;
         }
 
-        var MyClass = troop.Base.extend();
+        var MyClass = giant.Base.extend();
 
         raises(function () {
             MyClass.setInstanceMapper('foo');
@@ -29,11 +29,11 @@
 
         ok(ExtendedClass.isMemoized(), "ExtendedClass is also memoized");
 
-        ok(!troop.Base.isMemoized(), "Base class is not memoized");
+        ok(!giant.Base.isMemoized(), "Base class is not memoized");
     });
 
     test("Memoizing instance", function () {
-        var MyClass = troop.Base.extend()
+        var MyClass = giant.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
@@ -48,7 +48,7 @@
         // fake instance
         instance = {};
 
-        troop.Memoization.addInstance.call(MyClass, "foo", instance);
+        giant.Memoization.addInstance.call(MyClass, "foo", instance);
 
         deepEqual(
             MyClass.instanceRegistry,
@@ -60,26 +60,26 @@
     });
 
     test("Fetching memoized instance", function () {
-        var MyClass = troop.Base.extend()
+        var MyClass = giant.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
             instance = {};
 
-        troop.Memoization.addInstance.call(MyClass, 'foo', instance);
+        giant.Memoization.addInstance.call(MyClass, 'foo', instance);
 
-        strictEqual(troop.Memoization.getInstance.call(MyClass, 'foo'), instance, "Instance fetched from registry");
+        strictEqual(giant.Memoization.getInstance.call(MyClass, 'foo'), instance, "Instance fetched from registry");
     });
 
     test("Clearing instance registry", function () {
-        var MyClass = troop.Base.extend()
+        var MyClass = giant.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
             ChildClass = MyClass.extend(),
             instance = {};
 
-        troop.Memoization.addInstance.call(MyClass, 'foo', instance);
+        giant.Memoization.addInstance.call(MyClass, 'foo', instance);
 
         deepEqual(
             MyClass.instanceRegistry,
