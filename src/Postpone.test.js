@@ -1,4 +1,4 @@
-/*global phil, giant, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
+/*global phil, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
 var ns = {}; // global namespace
 
 (function () {

@@ -1,4 +1,4 @@
-/*global giant, giant, console */
+/*global giant, console */
 (function () {
     "use strict";
 
