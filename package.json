@@ -15,7 +15,7 @@
         "url" : "git@github.com:giantjs/giant-oop.git"
     },
     "dependencies"   : {
-        "dessert": "~0.3.2"
+        "giant-assertion": "0.0.3"
     },
     "devDependencies": {
         "phil"                : "~0.2.2",
@@ -31,7 +31,7 @@
         "QUnitAdapter"        : "https://dl.dropboxusercontent.com/u/9258903/packages/QUnitAdapter-0.1.0.tgz"
     },
     "files"          : [
-        "troop.js"
+        "giant-oop.js"
     ],
-    "main"           : "troop.js"
+    "main"           : "giant-oop.js"
 }
