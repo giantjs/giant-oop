@@ -66,7 +66,8 @@
     giant.writable = !giant.Feature.canAssignToReadOnly();
 
     /**
-     * Whether Troop is in testing mode (application state)
+     * Whether Giant OOP is in testing mode (application state)
+     * TODO: Rename to something more specific.
      * @type {boolean}
      */
     giant.testing = false;

@@ -40,9 +40,9 @@
         var v = giant.validators,
             extended = giant.Base.extend();
 
-        equal(v.isClass(extended), true, "Troop class passes assertion");
+        equal(v.isClass(extended), true, "Giant class passes assertion");
         equal(v.isClass({}), false, "Ordinary object fails assertion");
-        equal(v.isClassOptional(extended), true, "Troop class passes assertion (optional)");
+        equal(v.isClassOptional(extended), true, "Giant class passes assertion (optional)");
         equal(v.isClassOptional(), true, "Undefined passes assertion (optional)");
         equal(v.isClassOptional({}), false, "Ordinary object fails assertion (optional)");
     });
@@ -109,7 +109,7 @@
 
         equal(instance.getBase(), derived, "Instance extends from derived");
         equal(derived.getBase(), giant.Base, "Derived extends from giant.Base");
-        equal(giant.Base.getBase(), Object.prototype, "Troop.Base extends from Object.prototype");
+        equal(giant.Base.getBase(), Object.prototype, "giant.Base extends from Object.prototype");
     });
 
     test("Base validation", function () {
@@ -127,7 +127,7 @@
 
         ok(giant.Base.isA.call(myChild, giant.Base), "Not direct descendant");
 
-        ok(giant.Base.isBaseOf(myBase), "Troop base class is base to all others");
+        ok(giant.Base.isBaseOf(myBase), "Giant base class is base to all others");
         ok(myBase.isBaseOf(myChild), "Descendant");
         ok(!myChild.isBaseOf(myBase), "Invalid relation");
         ok(!myChild.isBaseOf(myChild), "Self is not base");

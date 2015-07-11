@@ -27,7 +27,7 @@
         },
 
         /**
-         * Verifies if `expr` is a Troop class.
+         * Verifies if `expr` is a Giant class.
          * @param {giant.Base} expr
          */
         isClass: function (expr) {
@@ -35,7 +35,7 @@
         },
 
         /**
-         * Verifies if `expr` is a Troop class or is not defined.
+         * Verifies if `expr` is a Giant class or is not defined.
          * @param {giant.Base} expr
          */
         isClassOptional: function (expr) {

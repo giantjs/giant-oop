@@ -11,7 +11,7 @@
     giant.Memoization = {
         /**
          * Adds instance to registry. Must be called on class object!
-         * @this {giant.Base} Troop-based class
+         * @this {giant.Base} Giant class
          * @param {string} key Instance key
          * @param {giant.Base} instance Instance to be memoized
          */

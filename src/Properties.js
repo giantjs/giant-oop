@@ -59,8 +59,8 @@
     });
 
     /**
-     * Allows properties to be added to arbitrary objects as if they were Troop classes.
-     * The Troop base class uses these methods internally. They are exposed however due to their usefulness in testing.
+     * Allows properties to be added to arbitrary objects as if they were Giant classes.
+     * The Giant base class uses these methods internally. They are exposed however due to their usefulness in testing.
      * @class
      */
     giant.Properties = {
@@ -271,7 +271,7 @@
         /**
          * Adds a trait to the current class.
          * A trait may be as simple as a plain object holding properties and methods to be copied over to the
-         * current class. More often however, a trait is a Troop class, through which, Troop realizes a form of
+         * current class. More often however, a trait is a Giant class, through which, Giant realizes a form of
          * multiple inheritance. There will still be just one prototype from which the current class stems, but
          * methods delegated by the trait class will be used the same way as if they were implemented on the current
          * class.
@@ -465,7 +465,7 @@
          */
         addMocks: function (methods) {
             giant
-                .assert(giant.testing, "Troop is not in testing mode.")
+                .assert(giant.testing, "Giant is not in testing mode.")
                 .isAllFunctions(methods, "Some mock methods are not functions.");
 
             self.addProperties.call(this, methods, false, true, true);
