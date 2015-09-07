@@ -1,6 +1,6 @@
 {
     "name"           : "giant-oop",
-    "version"        : "0.0.4",
+    "version"        : "0.0.5",
     "description"    : "OOP module for Giant",
     "keywords"       : [
         "oop",
@@ -20,8 +20,8 @@
         "url" : "git@github.com:giantjs/giant-oop.git"
     },
     "dependencies"   : {
-        "giant-namespace": "0.0.4",
-        "giant-assertion": "0.0.4"
+        "giant-namespace": "0.0.5",
+        "giant-assertion": "0.0.5"
     },
     "devDependencies": {
         "QUnitAdapter"        : "https://dl.dropboxusercontent.com/u/9258903/packages/QUnitAdapter-0.1.0.tgz",
