@@ -15,6 +15,6 @@
             .isAllFunctions(methods, "Invalid methods")
             .isAllPrefixed(methods, 'to', "Invalid method names");
 
-        giant.Properties.addProperties.call(builtInPrototype, methods, false, false, false);
+        giant.extendBuiltIn(builtInPrototype, methods);
     };
 }());

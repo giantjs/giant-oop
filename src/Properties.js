@@ -263,7 +263,7 @@
                 .isAllFunctions(methods, "Some private methods are not functions.")
                 .isAllPrefixed(methods, giant.privatePrefix, "Some private method names do not match the required prefix.");
 
-            self.addProperties.call(giant.Base.getTarget.call(this), methods, false, false, false);
+            self.addProperties.call(giant.Base.getTarget.call(this), methods);
 
             return this;
         },
@@ -388,7 +388,7 @@
         addPrivateConstants: function (properties) {
             giant.isAllPrefixed(properties, giant.privatePrefix, "Some private constant names do not match the required prefix.");
 
-            self.addProperties.call(this, properties, false, false, false);
+            self.addProperties.call(this, properties);
 
             return this;
         },
