@@ -1,4 +1,4 @@
-/*global giant, module, test, ok, equal, deepEqual, expect, raises */
+/*global giant, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
 var globalNs = {};
 
 (function () {

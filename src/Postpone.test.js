@@ -1,4 +1,4 @@
-/*global module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
+/*global giant, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
 var ns = {}; // global namespace
 
 (function () {
@@ -63,7 +63,7 @@ var ns = {}; // global namespace
             ns.foo = 'baz';
         });
 
-        equal(ns.foo, 'baz', "should overwrite generator function")
+        equal(ns.foo, 'baz', "should overwrite generator function");
     });
 
     test("Amendment", function () {
