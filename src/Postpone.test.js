@@ -1,4 +1,4 @@
-/*global phil, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
+/*global module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
 var ns = {}; // global namespace
 
 (function () {
@@ -9,11 +9,7 @@ var ns = {}; // global namespace
     test("Postpone", function () {
         var ns = {};
 
-        if (phil.hasGetterSetter()) {
-            expect(11);
-        } else {
-            expect(9);
-        }
+        expect(11);
 
         giant.postpone(ns, 'bar', function (object, propertyName, param1, param2) {
             ok(object === ns, "Object passed to generator");
@@ -23,9 +19,7 @@ var ns = {}; // global namespace
             return "foo";
         }, "param1", "param2");
 
-        if (phil.hasGetterSetter()) {
-            equal(typeof Object.getOwnPropertyDescriptor(ns, 'bar').value, 'undefined', "Placeholder value");
-        }
+        equal(typeof Object.getOwnPropertyDescriptor(ns, 'bar').value, 'undefined', "Placeholder value");
 
         // first access will replace the placeholder
         equal(ns.bar, "foo", "Accessing for the first time");
@@ -37,10 +31,8 @@ var ns = {}; // global namespace
             ns.bar = 'foo';
         });
 
-        if (phil.hasGetterSetter()) {
-            // placeholder replacement via setter requires real setters
-            equal(typeof Object.getOwnPropertyDescriptor(ns, 'bar').value, 'undefined', "Placeholder value");
-        }
+        // placeholder replacement via setter requires real setters
+        equal(typeof Object.getOwnPropertyDescriptor(ns, 'bar').value, 'undefined', "Placeholder value");
 
         equal(ns.bar, "foo", "Accessing for the first time");
 

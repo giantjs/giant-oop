@@ -1,4 +1,4 @@
-/*global giant, phil, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
+/*global giant, module, test, expect, ok, equal, notEqual, strictEqual, deepEqual, raises */
 (function () {
     "use strict";
 
@@ -126,13 +126,11 @@
             giant.Properties.addProperties.call(tmp, {a: 'blah'});
         }, "Property name conflict");
 
-        if (phil.hasGetterSetter()) {
             // environments where getters and setters are not available
             // can only work with static getter property descriptors
             tmp = {};
             giant.Properties.addProperties.call(tmp, {a: {get: function () {return this.b;}}, b: 'foo'});
             equal(tmp.a, 'foo', "Property added with getter");
-        }
 
         tmp = {};
         giant.Properties.addProperties.call(tmp, {a: null});
