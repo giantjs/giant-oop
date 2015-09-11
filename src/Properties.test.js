@@ -122,7 +122,7 @@
         giant.Properties.addProperties.call(tmp, {a: 'foo', b: 'bar'}, true, true, true);
         equal(tmp.a, 'foo', "Property added through object");
 
-        raises(function () {
+        throws(function () {
             giant.Properties.addProperties.call(tmp, {a: 'blah'});
         }, "Property name conflict");
 
@@ -200,7 +200,7 @@
             "Property added as trait"
         );
 
-        raises(function () {
+        throws(function () {
             giant.Base.addTrait.call(destination, trait);
         }, "Re-adding trait causes collision");
 
@@ -366,7 +366,7 @@
             foo: "foo"
         });
 
-        raises(function () {
+        throws(function () {
             giant.Base.addPrivate.call(tmp, {
                 bar: "bar"
             });
@@ -413,7 +413,7 @@
 
         function testMethod() {}
 
-        raises(function () {
+        throws(function () {
             giant.Base.addMocks.call(tmp, {
                 foo: testMethod
             });

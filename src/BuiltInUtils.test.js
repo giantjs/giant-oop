@@ -7,13 +7,13 @@
     test("Adding extension methods", function () {
         var builtIn = {};
 
-        raises(function () {
+        throws(function () {
             giant.extendBuiltIn(builtIn, {
                 toFoo: 'foo'
             });
         }, "should raise exception for non-function extensions");
 
-        raises(function () {
+        throws(function () {
             giant.extendBuiltIn(builtIn, {
                 foo: function () {}
             });

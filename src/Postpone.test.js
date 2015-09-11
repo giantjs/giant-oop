@@ -36,7 +36,7 @@ var ns = {}; // global namespace
 
         equal(ns.bar, "foo", "Accessing for the first time");
 
-        raises(function () {
+        throws(function () {
             giant.postpone(ns, 'bar', "bar");
         }, "Invalid generator function passed");
         equal(ns.bar, "foo", "Property value after second attempt to replace placeholder");
