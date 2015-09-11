@@ -11,10 +11,10 @@
     giant.Surrogate = {
         /**
          * Adds surrogates buffer to class.
-         * @this {giant.Base}
+         * @this giant.Base
          */
         initSurrogates: function () {
-            this.addConstants(/** @lends giant.Base */{
+            this.addConstants(/** @lends giant.Base# */{
                 /**
                  * Container for surrogate info. Added to class via .initSurrogates().
                  * @type {object}
@@ -35,7 +35,7 @@
 
         /**
          * Retrieves first surrogate fitting constructor arguments.
-         * @this {giant.Base}
+         * @this giant.Base
          * @returns {giant.Base}
          */
         getSurrogate: function () {
@@ -72,7 +72,7 @@
         }
     };
 
-    giant.Base.addMethods(/** @lends giant.Base */{
+    giant.Base.addMethods(/** @lends giant.Base# */{
         /**
          * Adds a handler to be called before evaluating any of the surrogate filters.
          * The specified handler receives the original constructor arguments and is expected to

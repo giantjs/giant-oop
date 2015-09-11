@@ -39,7 +39,7 @@
         }
     };
 
-    giant.Base.addMethods(/** @lends giant.Base */{
+    giant.Base.addMethods(/** @lends giant.Base# */{
         /**
          * Assigns instance key calculator to class. Makes class memoized.
          * @param {function} instanceMapper Instance key mapper function.
@@ -61,7 +61,7 @@
                 .assert(!hOP.call(this, 'instanceMapper'), "Instance mapper already set");
 
             this
-                .addMethods(/** @lends giant.Base */{
+                .addMethods(/** @lends giant.Base# */{
                     /**
                      * Maps constructor arguments to instance keys in the registry.
                      * Added to class via .setInstanceMapper().
@@ -70,7 +70,7 @@
                      */
                     instanceMapper: instanceMapper
                 })
-                .addPublic(/** @lends giant.Base */{
+                .addPublic(/** @lends giant.Base# */{
                     /**
                      * Lookup registry for instances of the memoized class.
                      * Has to be own property as child classes may put their instances here, too.

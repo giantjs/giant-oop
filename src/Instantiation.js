@@ -6,7 +6,7 @@
         Surrogate = giant.Surrogate,
         Base = giant.Base;
 
-    giant.Base.addMethods(/** @lends giant.Base */{
+    giant.Base.addMethods(/** @lends giant.Base# */{
         /**
          * Creates a new instance of the class it was called on. Arguments passed to .create will be handed over
          * to the user-defined .init method, which will decorate the new instance with properties.

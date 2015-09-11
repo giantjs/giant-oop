@@ -232,7 +232,6 @@
          *        bar: {get: function () {return "Bar";}
          *    });
          * @returns {giant.Base}
-         * @memberOf giant.Base
          */
         addMethods: function (methods) {
             giant.isAllFunctions(methods);
@@ -256,7 +255,6 @@
          *        _bar: {get: function () {return "Bar";}
          *    });
          * @returns {giant.Base}
-         * @memberOf giant.Base
          */
         addPrivateMethods: function (methods) {
             giant
@@ -290,7 +288,6 @@
          * myInstance = MyClass.create(); // alerts "trait init"
          * myInstance.foo(); // alerts "hello"
          * @returns {giant.Base}
-         * @memberOf giant.Base
          */
         addTrait: function (trait) {
             giant.isObject(trait, "Invalid trait descriptor");
@@ -337,7 +334,6 @@
          * @param {object|giant.Base} trait
          * @returns {giant.Base}
          * @see giant.Base.addTrait
-         * @memberOf giant.Base
          */
         addTraitAndExtend: function (trait) {
             return this
