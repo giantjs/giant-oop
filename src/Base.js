@@ -2,7 +2,6 @@
 (function () {
     "use strict";
 
-    // custom assertion for giant classes
     giant.addTypes(/** @lends giant */{
         /**
          * Checks whether properties of `expr` are *all* functions.
@@ -45,6 +44,12 @@
     });
 
     /**
+     * @name giant.Base.extend
+     * @function
+     * @returns {giant.Base}
+     */
+
+    /**
      * Base class. Implements tools for building, instantiating and testing classes.
      * @class
      */
@@ -76,7 +81,7 @@
 
     var self = giant.Base;
 
-    self.addMethods(/** @lends giant.Base */{
+    self.addMethods(/** @lends giant.Base# */{
         /**
          * Extends class. Extended classes may override base class methods and properties according to
          * regular OOP principles.
@@ -138,12 +143,12 @@
 
         /**
          * Tests whether the current class is base of the provided object.
-         * @function
+         * @method
+         * @returns {boolean}
          * @example
          * var MyClass = giant.Base.extend();
          * MyClass.isA(giant.Base) // true
          * MyClass.isA(MyClass) // false
-         * @returns {boolean}
          */
         isBaseOf: Object.prototype.isPrototypeOf,
 

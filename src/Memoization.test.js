@@ -1,4 +1,4 @@
-/*global giant, module, test, ok, equal, strictEqual, deepEqual, expect, raises */
+/*global giant */
 (function () {
     "use strict";
 
@@ -11,7 +11,7 @@
 
         var MyClass = giant.Base.extend();
 
-        raises(function () {
+        throws(function () {
             MyClass.setInstanceMapper('foo');
         }, "Invalid key mapper");
 
@@ -21,7 +21,7 @@
 
         ok(MyClass.isMemoized(), "MyClass is memoized");
 
-        raises(function () {
+        throws(function () {
             MyClass.setInstanceMapper(keyMapper);
         }, "Attempted to add another key mapper");
 
@@ -93,7 +93,7 @@
             "Registry before clearing (as seen from child class)"
         );
 
-        raises(function () {
+        throws(function () {
             ChildClass.clearInstanceRegistry();
         }, "Can't clear instances from derived class");
 
