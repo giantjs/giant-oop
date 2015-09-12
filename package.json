@@ -25,7 +25,7 @@
   },
   "devDependencies": {},
   "files": [
-    "giant-oop.js"
+    "lib"
   ],
-  "main": "giant-oop.js"
+  "main": "lib/giant-oop.js"
 }

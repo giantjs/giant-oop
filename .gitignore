@@ -1,6 +1,4 @@
 /*.tgz
 /.idea/
-/doc/
-/giant-oop.js
 /node_modules/
-/out/
+/lib/
