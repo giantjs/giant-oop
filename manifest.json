@@ -1,0 +1,19 @@
+{
+  "main": {
+    "assets": {
+      "js": [
+        "src/namespace.js",
+        "src/Feature.def.js",
+        "src/Base.def.js",
+        "src/Memoization.def.js",
+        "src/Surrogate.def.js",
+        "src/Instantiation.def.js",
+        "src/Properties.def.js",
+        "src/AmendUtils.def.js",
+        "src/BuiltInUtils.def.js",
+        "src/Postpone.def.js",
+        "src/exports.js"
+      ]
+    }
+  }
+}
