@@ -16,15 +16,15 @@ module.exports = function (config) {
 
             'src/namespace.js',
 
-            'src/Feature.js',
-            'src/Base.js',
-            'src/Memoization.js',
-            'src/Surrogate.js',
-            'src/Instantiation.js',
-            'src/Properties.js',
-            'src/AmendUtils.js',
-            'src/BuiltInUtils.js',
-            'src/Postpone.js',
+            'src/Feature.def.js',
+            'src/Base.def.js',
+            'src/Memoization.def.js',
+            'src/Surrogate.def.js',
+            'src/Instantiation.def.js',
+            'src/Properties.def.js',
+            'src/AmendUtils.def.js',
+            'src/BuiltInUtils.def.js',
+            'src/Postpone.def.js',
 
             'src/**/*.test.js'
         ],
