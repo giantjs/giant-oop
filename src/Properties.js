@@ -113,7 +113,7 @@
          * on the prototype chain.
          * @param {object} host
          * @param {string} propertyName
-         * @return {object|undefined}
+         * @returns {object|undefined}
          * @see Object.getOwnPropertyDescriptor
          */
         getPropertyDescriptor: function (host, propertyName) {
