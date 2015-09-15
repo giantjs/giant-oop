@@ -53,8 +53,8 @@
             };
 
             return this.isPlainObject(expr) &&
-                   this.isAllFunctions(expr) &&
-                   Object.getOwnPropertyNames(expr).join(',') in accessorMethods;
+                this.isAllFunctions(expr) &&
+                Object.getOwnPropertyNames(expr).join(',') in accessorMethods;
         }
     });
 
@@ -298,8 +298,8 @@
                 propertyNames = giant.Properties.getPropertyNames(
                     trait,
                     giant.Base.isBaseOf(trait) ?
-                    giant.Base :
-                    Object.prototype
+                        giant.Base :
+                        Object.prototype
                 ),
                 i, propertyName, property;
 
@@ -318,8 +318,8 @@
                 property = trait[propertyName];
                 Object.defineProperty(
                     typeof property === 'function' ?
-                    hostTarget :
-                    this,
+                        hostTarget :
+                        this,
                     propertyName,
                     giant.Properties.getPropertyDescriptor(trait, propertyName)
                 );
@@ -433,11 +433,19 @@
          * @see giant.Base#elevateMethod
          */
         elevateMethods: function () {
-            var i, methodName;
+            var base = this.getBase(),
+                elevatedMethods = {},
+                i, methodName, baseMethod;
+
             for (i = 0; i < arguments.length; i++) {
                 methodName = arguments[i];
-                this.elevateMethod(methodName);
+                baseMethod = base[methodName];
+                elevatedMethods[methodName] = baseMethod.bind(this);
             }
+
+            giant.isAllFunctions(elevatedMethods, "Attempted to elevate non-method");
+            giant.Base.addMethods.call(this, elevatedMethods);
+
             return this;
         },
 
