@@ -23,6 +23,7 @@ module.exports = function (config) {
             'src/Instantiation.def.js',
             'src/Properties.def.js',
             'src/AmendUtils.def.js',
+            'src/GlobalUtils.def.js',
             'src/BuiltInUtils.def.js',
             'src/Postpone.def.js',
 
