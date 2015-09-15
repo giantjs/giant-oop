@@ -234,7 +234,7 @@
          * @returns {giant.Base}
          */
         addMethods: function (methods) {
-            giant.isAllFunctions(methods);
+            giant.isAllFunctions(methods, "Invalid methods object");
 
             self.addProperties.call(giant.Base.getTarget.call(this), methods, false, true, false);
 
