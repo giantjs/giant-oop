@@ -85,9 +85,55 @@ var globalNs = {};
             {
                 namespace: ns,
                 className: 'child',
-                filter   : filter
+                filter   : filter,
+                priority : 0
             }
         ], "should set descriptor object for surrogate");
+    });
+
+    test("Surrogate addition with priority", function () {
+        var filter1 = function () {
+            },
+            filter2 = function () {
+            },
+            base = giant.Base.extend()
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            child1 = base.extend()
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            child2 = base.extend()
+                .addMethods({
+                    init: function () {
+                    }
+                }),
+            ns = {
+                base : base,
+                child: child1
+            };
+
+        base
+            .addSurrogate(ns, 'child1', filter1, 1)
+            .addSurrogate(ns, 'child2', filter2, 10);
+
+        deepEqual(base.surrogateInfo.descriptors, [
+            {
+                namespace: ns,
+                className: 'child2',
+                filter   : filter2,
+                priority : 10
+            },
+            {
+                namespace: ns,
+                className: 'child1',
+                filter   : filter1,
+                priority : 1
+            }
+        ], "should set descriptors in correct order");
     });
 
     test("Adding surrogate to memoized class", function () {
@@ -117,6 +163,7 @@ var globalNs = {};
             }
         });
 
-        base.addSurrogate(ns, 'child', function () {});
+        base.addSurrogate(ns, 'child', function () {
+        });
     });
 }());

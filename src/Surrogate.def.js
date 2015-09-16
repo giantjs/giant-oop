@@ -53,12 +53,13 @@
             var surrogateInfo = this.surrogateInfo,
                 preparationHandler = surrogateInfo.preparationHandler,
                 descriptorArguments = preparationHandler && preparationHandler.apply(this, arguments) ||
-                                      arguments,
+                    arguments,
                 descriptors = surrogateInfo.descriptors,
+                descriptorCount = descriptors.length,
                 i, descriptor;
 
             // going through descriptors and determining surrogate
-            for (i = 0; i < descriptors.length; i++) {
+            for (i = 0; i < descriptorCount; i++) {
                 descriptor = descriptors[i];
 
                 // determining whether arguments fit next filter
@@ -69,6 +70,19 @@
 
             // returning caller as fallback
             return this;
+        },
+
+        /**
+         * Compares surrogate descriptors for sorting.
+         * @param {object} a
+         * @param {object} b
+         * @returns {number}
+         */
+        surrogateDescriptorComparer: function (a, b) {
+            var priorityA = a.priority,
+                priorityB = b.priority;
+
+            return priorityA > priorityB ? -1 : priorityB > priorityA ? 1 : 0;
         }
     };
 
@@ -95,12 +109,14 @@
 
         /**
          * Adds a surrogate class to the current class. Instantiation is forwarded to the first surrogate where
-         * the filter returns true.
+         * the filter returns true. Surrogates are processed in order of descending priority values.
          * @param {object} namespace Namespace in which the surrogate class resides.
          * @param {string} className Surrogate class name. The class the namespace / class name point to does not
          * have to exist (or be resolved when postponed) at the time of adding the filter.
          * @param {function} filter Function evaluating whether the surrogate class specified by the namespace
          * and class name fits the arguments.
+         * @param {number} [priority=0] When to evaluate the surrogate among all surrogates applied to a class.
+         * Surrogates with higher priority values are processed first.
          * @example
          * var ns = {}; // namespace
          * ns.Horse = giant.Base.extend()
@@ -117,7 +133,9 @@
          *     myPony = ns.Horse.create(3); // instance of ns.Pony
          * @returns {giant.Base}
          */
-        addSurrogate: function (namespace, className, filter) {
+        addSurrogate: function (namespace, className, filter, priority) {
+            priority = priority || 0;
+
             giant
                 .isObject(namespace, "Invalid namespace object")
                 .isString(className, "Invalid class name")
@@ -133,11 +151,19 @@
                 giant.Surrogate.initSurrogates.call(this);
             }
 
-            this.surrogateInfo.descriptors.push({
+            var descriptors = this.surrogateInfo.descriptors;
+
+            // adding descriptor to container
+            descriptors.push({
                 namespace: namespace,
                 className: className,
-                filter   : filter
+                filter   : filter,
+                priority : priority
             });
+
+            // sorting descriptors so they are in order of (descending) priority
+            // (sorting might take O(n*logn), but it's altogether cheaper to sort on addition than on iteration)
+            descriptors.sort(giant.Surrogate.surrogateDescriptorComparer);
 
             return this;
         }
