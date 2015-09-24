@@ -4,4 +4,4 @@
 var $oop = {};
 
 /** @namespace */
-var $assertion = $assertion || require('$oop-assertion');
+var $assertion = $assertion || require('giant-assertion');
