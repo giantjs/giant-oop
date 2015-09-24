@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -8,13 +8,13 @@
         var builtIn = {};
 
         throws(function () {
-            giant.extendBuiltIn(builtIn, {
+            $oop.extendBuiltIn(builtIn, {
                 toFoo: 'foo'
             });
         }, "should raise exception for non-function extensions");
 
         throws(function () {
-            giant.extendBuiltIn(builtIn, {
+            $oop.extendBuiltIn(builtIn, {
                 foo: function () {}
             });
         }, "should raise exception for non-conversion extensions");
@@ -23,7 +23,7 @@
             return 'foo' + this;
         }
 
-        giant.extendBuiltIn(builtIn, {
+        $oop.extendBuiltIn(builtIn, {
             toFoo: toFoo
         });
 

@@ -1,44 +1,44 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
     module("Base");
 
     test("Class extension", function () {
-        var myClass = giant.Base.extend.call(Object.prototype);
+        var myClass = $oop.Base.extend.call(Object.prototype);
 
         ok(Object.getPrototypeOf(myClass) === Object.prototype, "Immediate prototype is base");
     });
 
     test("Extension while in test mode", function () {
-        giant.testing = true;
+        $oop.testing = true;
 
-        var myClass = giant.Base.extend.call(Object.prototype);
+        var myClass = $oop.Base.extend.call(Object.prototype);
 
         ok(Object.getPrototypeOf(myClass) !== Object.prototype, "Immediate prototype not base");
         ok(Object.getPrototypeOf(Object.getPrototypeOf(myClass)) === Object.prototype, "Second prototype is base");
 
-        giant.testing = false;
+        $oop.testing = false;
     });
 
     test("Base", function () {
-        var testing = giant.testing,
+        var testing = $oop.testing,
             extended;
 
-        giant.testing = false;
-        extended = giant.Base.extend();
-        equal(giant.Base.getBase.call(extended), giant.Base, "Getting base class in live mode");
+        $oop.testing = false;
+        extended = $oop.Base.extend();
+        equal($oop.Base.getBase.call(extended), $oop.Base, "Getting base class in live mode");
 
-        giant.testing = true;
-        extended = giant.Base.extend();
-        equal(giant.Base.getBase.call(extended), giant.Base, "Getting base class in testing mode");
+        $oop.testing = true;
+        extended = $oop.Base.extend();
+        equal($oop.Base.getBase.call(extended), $oop.Base, "Getting base class in testing mode");
 
-        giant.testing = testing;
+        $oop.testing = testing;
     });
 
     test("Custom assertions", function () {
         var v = $assertion.validators,
-            extended = giant.Base.extend();
+            extended = $oop.Base.extend();
 
         equal(v.isClass(extended), true, "Giant class passes assertion");
         equal(v.isClass({}), false, "Ordinary object fails assertion");
@@ -48,7 +48,7 @@
     });
 
     test("Extension", function () {
-        var hasPropertyAttributes = giant.Feature.hasPropertyAttributes(),
+        var hasPropertyAttributes = $oop.Feature.hasPropertyAttributes(),
             derived, keys,
             instance;
 
@@ -71,7 +71,7 @@
                 });
         }
 
-        derived = giant.Base.extend()
+        derived = $oop.Base.extend()
             .addPrivate({
                 _hello: "world"
             })
@@ -108,26 +108,26 @@
         equal(instance._woo, "hoo", "Private instance member");
 
         equal(instance.getBase(), derived, "Instance extends from derived");
-        equal(derived.getBase(), giant.Base, "Derived extends from giant.Base");
-        equal(giant.Base.getBase(), Object.prototype, "giant.Base extends from Object.prototype");
+        equal(derived.getBase(), $oop.Base, "Derived extends from $oop.Base");
+        equal($oop.Base.getBase(), Object.prototype, "$oop.Base extends from Object.prototype");
     });
 
     test("Base validation", function () {
-        ok(giant.Base.isA.call({}, Object.prototype), "{} is an Object.prototype");
-        ok(giant.Base.isA.call([], Array.prototype), "[] is an Array.prototype");
+        ok($oop.Base.isA.call({}, Object.prototype), "{} is an Object.prototype");
+        ok($oop.Base.isA.call([], Array.prototype), "[] is an Array.prototype");
 
-        var myBase = giant.Base.extend()
+        var myBase = $oop.Base.extend()
                 .addMethods({init: function () {}}),
             myChild = myBase.extend()
                 .addMethods({init: function () {}});
 
-        ok(giant.Base.instanceOf.call(myChild, myBase), "Direct descendant");
-        ok(giant.Base.instanceOf.call(myBase, giant.Base), "Direct descendant");
-        ok(!giant.Base.instanceOf.call(myChild, giant.Base), "Not direct descendant");
+        ok($oop.Base.instanceOf.call(myChild, myBase), "Direct descendant");
+        ok($oop.Base.instanceOf.call(myBase, $oop.Base), "Direct descendant");
+        ok(!$oop.Base.instanceOf.call(myChild, $oop.Base), "Not direct descendant");
 
-        ok(giant.Base.isA.call(myChild, giant.Base), "Not direct descendant");
+        ok($oop.Base.isA.call(myChild, $oop.Base), "Not direct descendant");
 
-        ok(giant.Base.isBaseOf(myBase), "Giant base class is base to all others");
+        ok($oop.Base.isBaseOf(myBase), "Giant base class is base to all others");
         ok(myBase.isBaseOf(myChild), "Descendant");
         ok(!myChild.isBaseOf(myBase), "Invalid relation");
         ok(!myChild.isBaseOf(myChild), "Self is not base");

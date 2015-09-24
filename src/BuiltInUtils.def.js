@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -10,11 +10,11 @@
      * @param {object} builtInPrototype prototype object to extend.
      * @param {object} methods Override methods. All method names must be prefixed with "to".
      */
-    giant.extendBuiltIn = function (builtInPrototype, methods) {
+    $oop.extendBuiltIn = function (builtInPrototype, methods) {
         $assertion
             .isAllFunctions(methods, "Invalid methods")
             .isAllPrefixed(methods, 'to', "Invalid method names");
 
-        giant.Properties.addProperties.call(builtInPrototype, methods, false, false, false);
+        $oop.Properties.addProperties.call(builtInPrototype, methods, false, false, false);
     };
 }());

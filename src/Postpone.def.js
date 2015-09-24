@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -6,7 +6,7 @@
         slice = Array.prototype.slice,
         validators = $assertion.validators;
 
-    $assertion.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends $oop */{
         /**
          * Determines whether a property descriptor is a getter-setter.
          * @param {object} propertyDescriptor
@@ -32,7 +32,7 @@
         }
     });
 
-    giant.Base.addMethods.call(giant, /** @lends giant */{
+    $oop.addGlobalFunctions(/** @lends $oop */{
         /**
          * Postpones a property definition on the specified object until first access.
          * Initially assigns a special getter to the property, then, when the property is accessed for the first time,
@@ -44,7 +44,7 @@
          * plus all extra arguments passed to .postpone().
          * @example
          * var obj = {};
-         * giant.postpone(obj, 'foo', function () {
+         * $oop.postpone(obj, 'foo', function () {
          *    return "bar";
          * });
          * obj.foo // runs generator and alerts "bar"
@@ -55,7 +55,7 @@
                 .isString(propertyName, "Invalid property name")
                 .isFunction(generator, "Invalid generator function");
 
-            var Amendments = giant.AmendUtils,
+            var Amendments = $oop.AmendUtils,
                 propertyDescriptorBefore = Object.getOwnPropertyDescriptor(host, propertyName),
                 propertyDescriptorAfter,
                 generatorArguments = slice.call(arguments);
@@ -133,11 +133,11 @@
          * plus all extra arguments passed to .amendPostponed(). Return value is discarded.
          * @example
          * var ns = {};
-         * giant.postpone(ns, 'foo', function () {
+         * $oop.postpone(ns, 'foo', function () {
          *  ns.foo = {hello: "World"};
          * });
          * //...
-         * giant.amendPostponed(ns, 'foo', function () {
+         * $oop.amendPostponed(ns, 'foo', function () {
          *  ns.foo.howdy = "Fellas";
          * });
          * // howdy is not added until first access to `ns.foo`
@@ -158,7 +158,7 @@
                 // there is no value nor setter-getter defined on property
                 // we're trying to amend before postponing
                 // postponing with dummy generator function
-                giant.postpone(host, propertyName, function () {
+                $oop.postpone(host, propertyName, function () {
                 });
 
                 // re-evaluating property descriptor
@@ -168,12 +168,12 @@
             if (validators.isSetterGetterDescriptor(propertyDescriptor)) {
                 // property is setter-getter, ie. unresolved
                 // adding generator to amendment functions
-                giant.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
+                $oop.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
             } else if (propertyDescriptor) {
                 // property is value, assumed to be a resolved postponed property
 
                 // calling modifier immediately
-                modifier.apply(giant, modifierArguments);
+                modifier.apply($oop, modifierArguments);
             }
         }
     });

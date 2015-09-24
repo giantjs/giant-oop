@@ -1,8 +1,8 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
-    $assertion.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends $oop */{
         /**
          * Checks whether properties of `expr` are *all* functions.
          * @param {object} expr
@@ -27,7 +27,7 @@
 
         /**
          * Verifies if `expr` is a Giant class.
-         * @param {giant.Base} expr
+         * @param {$oop.Base} expr
          */
         isClass: function (expr) {
             return self.isPrototypeOf(expr);
@@ -35,7 +35,7 @@
 
         /**
          * Verifies if `expr` is a Giant class or is not defined.
-         * @param {giant.Base} expr
+         * @param {$oop.Base} expr
          */
         isClassOptional: function (expr) {
             return typeof expr === 'undefined' ||
@@ -44,16 +44,16 @@
     });
 
     /**
-     * @name giant.Base.extend
+     * @name $oop.Base.extend
      * @function
-     * @returns {giant.Base}
+     * @returns {$oop.Base}
      */
 
     /**
      * Base class. Implements tools for building, instantiating and testing classes.
      * @class
      */
-    giant.Base = {
+    $oop.Base = {
         /**
          * Disposable method for adding further (public) methods.
          * Will be replaced by Properties.
@@ -79,15 +79,15 @@
         }
     };
 
-    var self = giant.Base;
+    var self = $oop.Base;
 
-    self.addMethods(/** @lends giant.Base# */{
+    self.addMethods(/** @lends $oop.Base# */{
         /**
          * Extends class. Extended classes may override base class methods and properties according to
          * regular OOP principles.
          * @example
-         * var MyClass = giant.Base.extend();
-         * @returns {giant.Base}
+         * var MyClass = $oop.Base.extend();
+         * @returns {$oop.Base}
          */
         extend: function () {
             var result = Object.create(this);
@@ -96,7 +96,7 @@
              * Extending once more with no own properties
              * so that methods may be mocked on a static level.
              */
-            if (giant.testing === true) {
+            if ($oop.testing === true) {
                 result = Object.create(result);
             }
 
@@ -107,10 +107,10 @@
          * Determines target object of method addition.
          * In testing mode, each class has two prototype levels and methods should go to the lower one
          * so they may be covered on the other. Do not use in production, only testing.
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         getTarget: function () {
-            return /** @type {giant.Base} */ giant.testing === true ?
+            return /** @type {$oop.Base} */ $oop.testing === true ?
                 Object.getPrototypeOf(this) :
                 this;
         },
@@ -118,12 +118,12 @@
         /**
          * Retrieves the base class of the current class.
          * @example
-         * var MyClass = giant.Base.extend();
-         * MyClass.getBase() === giant.Base; // true
-         * @returns {giant.Base}
+         * var MyClass = $oop.Base.extend();
+         * MyClass.getBase() === $oop.Base; // true
+         * @returns {$oop.Base}
          */
         getBase: function () {
-            return /** @type {giant.Base} */ giant.testing === true ?
+            return /** @type {$oop.Base} */ $oop.testing === true ?
                 Object.getPrototypeOf(Object.getPrototypeOf(this)) :
                 Object.getPrototypeOf(this);
         },
@@ -131,10 +131,10 @@
         /**
          * Tests whether the current class or instance is a descendant of base.
          * @example
-         * var MyClass = giant.Base.extend();
-         * MyClass.isA(giant.Base) // true
+         * var MyClass = $oop.Base.extend();
+         * MyClass.isA($oop.Base) // true
          * MyClass.isA(MyClass) // false
-         * @param {giant.Base} base
+         * @param {$oop.Base} base
          * @returns {boolean}
          */
         isA: function (base) {
@@ -146,8 +146,8 @@
          * @method
          * @returns {boolean}
          * @example
-         * var MyClass = giant.Base.extend();
-         * MyClass.isA(giant.Base) // true
+         * var MyClass = $oop.Base.extend();
+         * MyClass.isA($oop.Base) // true
          * MyClass.isA(MyClass) // false
          */
         isBaseOf: Object.prototype.isPrototypeOf,
@@ -155,12 +155,12 @@
         /**
          * Tests whether the current class or instance is the direct extension or instance
          * of the specified class.
-         * @param {giant.Base} base
+         * @param {$oop.Base} base
          * @example
-         * var ClassA = giant.Base.extend(),
+         * var ClassA = $oop.Base.extend(),
          *     ClassB = ClassA.extend();
-         * ClassA.instanceOf(giant.Base) // true
-         * ClassB.instanceOf(giant.Base) // false
+         * ClassA.instanceOf($oop.Base) // true
+         * ClassB.instanceOf($oop.Base) // false
          * ClassB.instanceOf(ClassA) // true
          * @returns {Boolean}
          */

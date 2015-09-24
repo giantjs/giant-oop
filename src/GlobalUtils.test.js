@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -13,13 +13,13 @@
         functions[constName] = 'foo';
 
         throws(function () {
-            giant.addGlobalFunctions(functions);
+            $oop.addGlobalFunctions(functions);
         }, "should throw exception on invalid functions");
 
         functions[constName] = func;
 
-        strictEqual(giant.addGlobalFunctions(functions), giant, "should be chainable");
-        strictEqual(giant[constName], func, "should set function");
+        strictEqual($oop.addGlobalFunctions(functions), $oop, "should be chainable");
+        strictEqual($oop[constName], func, "should set function");
     });
 
     test("Adding global constants", function () {
@@ -28,11 +28,11 @@
 
         constants[constName] = true;
 
-        strictEqual(giant.addGlobalConstants(constants), giant, "should be chainable");
-        equal(giant[constName], true, "should set constant value");
+        strictEqual($oop.addGlobalConstants(constants), $oop, "should be chainable");
+        equal($oop[constName], true, "should set constant value");
 
         throws(function () {
-            giant.addGlobalConstants(constants);
+            $oop.addGlobalConstants(constants);
         }, "should raise exception on re-adding constant");
     });
 }());

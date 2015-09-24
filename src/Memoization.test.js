@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -9,7 +9,7 @@
             return name;
         }
 
-        var MyClass = giant.Base.extend();
+        var MyClass = $oop.Base.extend();
 
         throws(function () {
             MyClass.setInstanceMapper('foo');
@@ -29,11 +29,11 @@
 
         ok(ExtendedClass.isMemoized(), "ExtendedClass is also memoized");
 
-        ok(!giant.Base.isMemoized(), "Base class is not memoized");
+        ok(!$oop.Base.isMemoized(), "Base class is not memoized");
     });
 
     test("Memoizing instance", function () {
-        var MyClass = giant.Base.extend()
+        var MyClass = $oop.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
@@ -48,7 +48,7 @@
         // fake instance
         instance = {};
 
-        giant.Memoization.addInstance.call(MyClass, "foo", instance);
+        $oop.Memoization.addInstance.call(MyClass, "foo", instance);
 
         deepEqual(
             MyClass.instanceRegistry,
@@ -60,26 +60,26 @@
     });
 
     test("Fetching memoized instance", function () {
-        var MyClass = giant.Base.extend()
+        var MyClass = $oop.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
             instance = {};
 
-        giant.Memoization.addInstance.call(MyClass, 'foo', instance);
+        $oop.Memoization.addInstance.call(MyClass, 'foo', instance);
 
-        strictEqual(giant.Memoization.getInstance.call(MyClass, 'foo'), instance, "Instance fetched from registry");
+        strictEqual($oop.Memoization.getInstance.call(MyClass, 'foo'), instance, "Instance fetched from registry");
     });
 
     test("Clearing instance registry", function () {
-        var MyClass = giant.Base.extend()
+        var MyClass = $oop.Base.extend()
                 .setInstanceMapper(function keyMapper(name) {
                     return name;
                 }),
             ChildClass = MyClass.extend(),
             instance = {};
 
-        giant.Memoization.addInstance.call(MyClass, 'foo', instance);
+        $oop.Memoization.addInstance.call(MyClass, 'foo', instance);
 
         deepEqual(
             MyClass.instanceRegistry,

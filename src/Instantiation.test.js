@@ -1,11 +1,11 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
     module("Instantiation");
 
     test("Instance creation", function () {
-        var MyClass = giant.Base.extend(),
+        var MyClass = $oop.Base.extend(),
             instance;
 
         expect(3);
@@ -22,7 +22,7 @@
     });
 
     test("Memoized instantiation", function () {
-        var MyClass = giant.Base.extend()
+        var MyClass = $oop.Base.extend()
                 .setInstanceMapper(function (name) {
                     return name;
                 }),
@@ -42,7 +42,7 @@
     });
 
     test("Opting out of memoization", function () {
-        var MyClass = giant.Base.extend()
+        var MyClass = $oop.Base.extend()
                 .setInstanceMapper(function (name) {
                     return name !== 'bar' ? name : undefined;
                 }),
@@ -61,7 +61,7 @@
 
         var ns = {};
 
-        ns.Base = giant.Base.extend()
+        ns.Base = $oop.Base.extend()
             .addSurrogate(ns, 'Child1', function (test) {
                 return test === 'foo';
             })
@@ -89,7 +89,7 @@
     test("Instantiation with surrogates & memoization", function () {
         var ns = {};
 
-        ns.Base = giant.Base.extend()
+        ns.Base = $oop.Base.extend()
             .setInstanceMapper(function (foo) {
                 return foo;
             })

@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -6,7 +6,7 @@
      * Implements methods to detect environment features relevant to OOP and testing.
      * @class
      */
-    giant.Feature = {
+    $oop.Feature = {
         /**
          * Determines whether read-only properties may be covered up by assignment.
          * @returns {boolean}
@@ -63,12 +63,12 @@
      * Whether methods should be writable (environmental)
      * @type {boolean}
      */
-    giant.writable = !giant.Feature.canAssignToReadOnly();
+    $oop.writable = !$oop.Feature.canAssignToReadOnly();
 
     /**
      * Whether Giant OOP is in testing mode (application state)
      * TODO: Rename to something more specific.
      * @type {boolean}
      */
-    giant.testing = false;
+    $oop.testing = false;
 }());

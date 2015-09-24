@@ -1,25 +1,25 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
-    giant.Properties.addProperties.call(giant, /** @lends giant */{
+    $oop.Properties.addProperties.call($oop, /** @lends $oop */{
         /**
          * @param {object} functions
-         * @returns {giant}
+         * @returns {$oop}
          */
         addGlobalFunctions: function (functions) {
             $assertion.isAllFunctions(functions, "Invalid functions object");
-            giant.Properties.addProperties.call(giant, functions, false, true, false);
+            $oop.Properties.addProperties.call(this, functions, false, true, false);
             return this;
         },
 
         /**
-         * Adds constants to the global giant namespace.
+         * Adds constants to the global $oop namespace.
          * @param {object} constants Override methods. All method names must be prefixed with "to".
-         * @returns {giant}
+         * @returns {$oop}
          */
         addGlobalConstants: function (constants) {
-            giant.Properties.addProperties.call(giant, constants, false, true, false);
+            $oop.Properties.addProperties.call(this, constants, false, true, false);
             return this;
         }
     });

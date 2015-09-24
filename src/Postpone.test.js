@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 var ns = {}; // global namespace
 
 (function () {
@@ -11,7 +11,7 @@ var ns = {}; // global namespace
 
         expect(11);
 
-        giant.postpone(ns, 'bar', function (object, propertyName, param1, param2) {
+        $oop.postpone(ns, 'bar', function (object, propertyName, param1, param2) {
             ok(object === ns, "Object passed to generator");
             equal(propertyName, 'bar', "Property name passed to generator");
             equal(param1, 'param1', "Extra parameter passed to generator");
@@ -27,7 +27,7 @@ var ns = {}; // global namespace
 
         ns = {};
 
-        giant.postpone(ns, 'bar', function () {
+        $oop.postpone(ns, 'bar', function () {
             ns.bar = 'foo';
         });
 
@@ -37,7 +37,7 @@ var ns = {}; // global namespace
         equal(ns.bar, "foo", "Accessing for the first time");
 
         throws(function () {
-            giant.postpone(ns, 'bar', "bar");
+            $oop.postpone(ns, 'bar', "bar");
         }, "Invalid generator function passed");
         equal(ns.bar, "foo", "Property value after second attempt to replace placeholder");
     });
@@ -45,7 +45,7 @@ var ns = {}; // global namespace
     test("Infinite loop prevention", function () {
         var ns = {};
 
-        giant.postpone(ns, 'foo', function () {
+        $oop.postpone(ns, 'foo', function () {
             ns.bar = 'bar';
         });
 
@@ -55,11 +55,11 @@ var ns = {}; // global namespace
     test("Postpone override", function () {
         var ns = {};
 
-        giant.postpone(ns, 'foo', function () {
+        $oop.postpone(ns, 'foo', function () {
             ns.foo = 'bar';
         });
 
-        giant.postpone(ns, 'foo', function () {
+        $oop.postpone(ns, 'foo', function () {
             ns.foo = 'baz';
         });
 
@@ -72,7 +72,7 @@ var ns = {}; // global namespace
         var ns = {},
             propertyDescriptor;
 
-        giant.postpone(ns, 'foo', function () {
+        $oop.postpone(ns, 'foo', function () {
             return {bar: 'bar'};
         });
 
@@ -85,7 +85,7 @@ var ns = {}; // global namespace
             ns.foo.bar += 'baz';
         };
 
-        giant.amendPostponed(ns, 'foo', modifier, 'extraParam');
+        $oop.amendPostponed(ns, 'foo', modifier, 'extraParam');
 
         ok(propertyDescriptor.get.amendments instanceof Array, "Amendment container is array");
         equal(propertyDescriptor.get.amendments.length, 1, "One amendment in container");
@@ -107,7 +107,7 @@ var ns = {}; // global namespace
             foo: 'bar'
         };
 
-        giant.amendPostponed(ns, 'foo', function () {
+        $oop.amendPostponed(ns, 'foo', function () {
             ns.foo += 'baz';
         });
 
@@ -117,11 +117,11 @@ var ns = {}; // global namespace
     test("Postponing after amendment", function () {
         var ns = {};
 
-        giant.amendPostponed(ns, 'foo', function () {
+        $oop.amendPostponed(ns, 'foo', function () {
             ns.foo.push('baz');
         });
 
-        giant.postpone(ns, 'foo', function () {
+        $oop.postpone(ns, 'foo', function () {
             ns.foo = ['bar'];
         });
 

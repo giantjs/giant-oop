@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 var ns = {}; // global namespace
 
 (function () {
@@ -18,12 +18,12 @@ var ns = {}; // global namespace
             configurable: true
         };
 
-        deepEqual(giant.AmendUtils.getAmendments(propertyDescriptor), [],
+        deepEqual($oop.AmendUtils.getAmendments(propertyDescriptor), [],
             "should return empty array for no amendments");
 
         propertyDescriptor.get.amendments = ['foo', 'bar'];
 
-        deepEqual(giant.AmendUtils.getAmendments(propertyDescriptor), ['foo', 'bar'],
+        deepEqual($oop.AmendUtils.getAmendments(propertyDescriptor), ['foo', 'bar'],
             "should return amendments array from descriptor");
     });
 
@@ -39,7 +39,7 @@ var ns = {}; // global namespace
             configurable: true
         };
 
-        giant.AmendUtils.setAmendments(propertyDescriptor, ['foo', 'bar']);
+        $oop.AmendUtils.setAmendments(propertyDescriptor, ['foo', 'bar']);
 
         deepEqual(propertyDescriptor.get.amendments, ['foo', 'bar'],
             "should set amendments array on descriptor");
@@ -60,7 +60,7 @@ var ns = {}; // global namespace
             },
             modifierArguments = [];
 
-        giant.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
+        $oop.AmendUtils.addAmendment(propertyDescriptor, modifier, modifierArguments);
 
         deepEqual(propertyDescriptor.get.amendments, [
             {
@@ -93,6 +93,6 @@ var ns = {}; // global namespace
                 }
             ];
 
-        giant.AmendUtils.applyAmendments(propertyDescriptor, amendments);
+        $oop.AmendUtils.applyAmendments(propertyDescriptor, amendments);
     });
 }());

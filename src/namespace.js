@@ -1,7 +1,7 @@
 /*jshint node:true */
 
 /** @namespace */
-var giant = giant || require('giant-namespace');
+var $oop = {};
 
 /** @namespace */
-var $assertion = $assertion || require('giant-assertion');
+var $assertion = $assertion || require('$oop-assertion');

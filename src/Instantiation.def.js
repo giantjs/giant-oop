@@ -1,27 +1,27 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
-    var Memoization = giant.Memoization,
-        Surrogate = giant.Surrogate,
-        Base = giant.Base;
+    var Memoization = $oop.Memoization,
+        Surrogate = $oop.Surrogate,
+        Base = $oop.Base;
 
-    giant.Base.addMethods(/** @lends giant.Base# */{
+    $oop.Base.addMethods(/** @lends $oop.Base# */{
         /**
          * Creates a new instance of the class it was called on. Arguments passed to .create will be handed over
          * to the user-defined .init method, which will decorate the new instance with properties.
-         * @see giant.Base.setInstanceMapper
+         * @see $oop.Base.setInstanceMapper
          * Instantiation might create a new instance of a subclass if the current class has surrogates.
-         * @see giant.Base.addSurrogate
+         * @see $oop.Base.addSurrogate
          * @example
-         * var MyClass = giant.Base.extend({
+         * var MyClass = $oop.Base.extend({
          *         init: function (foo) {
          *            this.foo = 'bar';
          *         }
          *     }),
          *     myInstance = MyClass.create("bar");
          * myInstance.foo // "bar"
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         create: function () {
             var self = this.surrogateInfo && Surrogate.getSurrogate.apply(this, arguments) ||

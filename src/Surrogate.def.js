@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -8,13 +8,13 @@
      * @class
      * @ignore
      */
-    giant.Surrogate = {
+    $oop.Surrogate = {
         /**
          * Adds surrogates buffer to class.
-         * @this giant.Base
+         * @this $oop.Base
          */
         initSurrogates: function () {
-            this.addConstants(/** @lends giant.Base# */{
+            this.addConstants(/** @lends $oop.Base# */{
                 /**
                  * Container for surrogate info. Added to class via .initSurrogates().
                  * @type {object}
@@ -35,8 +35,8 @@
 
         /**
          * Retrieves first surrogate fitting constructor arguments.
-         * @this giant.Base
-         * @returns {giant.Base}
+         * @this $oop.Base
+         * @returns {$oop.Base}
          */
         getSurrogate: function () {
             /**
@@ -86,20 +86,20 @@
         }
     };
 
-    giant.Base.addMethods(/** @lends giant.Base# */{
+    $oop.Base.addMethods(/** @lends $oop.Base# */{
         /**
          * Adds a handler to be called before evaluating any of the surrogate filters.
          * The specified handler receives the original constructor arguments and is expected to
          * return a modified argument list (array) that will be passed to the surrogate filters.
          * @param {function} handler
-         * @returns {giant.Base}
-         * @see giant.Base.addSurrogate
+         * @returns {$oop.Base}
+         * @see $oop.Base.addSurrogate
          */
         prepareSurrogates: function (handler) {
             $assertion.isFunction(handler, "Invalid handler");
 
             if (!hOP.call(this, 'surrogateInfo')) {
-                giant.Surrogate.initSurrogates.call(this);
+                $oop.Surrogate.initSurrogates.call(this);
             }
 
             this.surrogateInfo.preparationHandler = handler;
@@ -119,7 +119,7 @@
          * Surrogates with higher priority values are processed first.
          * @example
          * var ns = {}; // namespace
-         * ns.Horse = giant.Base.extend()
+         * ns.Horse = $oop.Base.extend()
          *     .prepareSurrogates(function (height) {
          *         return [height < 5]; // isPony
          *     })
@@ -131,7 +131,7 @@
          *     .addMethods({ init: function () {} });
          * var myHorse = ns.Horse.create(10), // instance of ns.Horse
          *     myPony = ns.Horse.create(3); // instance of ns.Pony
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addSurrogate: function (namespace, className, filter, priority) {
             priority = priority || 0;
@@ -148,7 +148,7 @@
 
             if (!hOP.call(this, 'surrogateInfo')) {
                 // initializing surrogate info container
-                giant.Surrogate.initSurrogates.call(this);
+                $oop.Surrogate.initSurrogates.call(this);
             }
 
             var descriptors = this.surrogateInfo.descriptors;
@@ -163,7 +163,7 @@
 
             // sorting descriptors so they are in order of (descending) priority
             // (sorting might take O(n*logn), but it's altogether cheaper to sort on addition than on iteration)
-            descriptors.sort(giant.Surrogate.surrogateDescriptorComparer);
+            descriptors.sort($oop.Surrogate.surrogateDescriptorComparer);
 
             return this;
         }

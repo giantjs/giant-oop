@@ -1,11 +1,11 @@
-/*global giant, console */
+/*global $oop, console */
 (function () {
     "use strict";
 
     var hOP = Object.prototype.hasOwnProperty,
         validators = $assertion.validators;
 
-    $assertion.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends $oop */{
         /**
          * Checks whether host object has propertyName defined as its
          * own property.
@@ -63,7 +63,7 @@
      * The Giant base class uses these methods internally. They are exposed however due to their usefulness in testing.
      * @class
      */
-    giant.Properties = {
+    $oop.Properties = {
         /**
          * Retrieves the object from the host's prototype chain that owns the specified property.
          * @param {string} propertyName
@@ -126,7 +126,7 @@
 
         /**
          * Adds single value property to the context.
-         * @this {giant.Base}
+         * @this {$oop.Base}
          * @param {string} propertyName Property name.
          * @param value {*} Property value to be assigned.
          * @param {boolean} [isWritable]
@@ -142,7 +142,7 @@
 
             Object.defineProperty(this, propertyName, {
                 value       : value,
-                writable    : isWritable || giant.messy,
+                writable    : isWritable || $oop.messy,
                 enumerable  : isEnumerable,
                 configurable: isConfigurable
             });
@@ -150,7 +150,7 @@
 
         /**
          * Adds single accessor property to the context.
-         * @this {giant.Base}
+         * @this {$oop.Base}
          * @param {string} propertyName Property name.
          * @param {function} [getter] Property getter.
          * @param {function} [setter] Property setter.
@@ -175,12 +175,12 @@
 
         /**
          * Adds a block of properties to the context having the specified attributes.
-         * @this {giant.Base}
+         * @this {$oop.Base}
          * @param {object|function} properties Property object or its generator function.
          * @param {boolean} [isWritable]
          * @param {boolean} [isEnumerable]
          * @param {boolean} [isConfigurable]
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addProperties: function (properties, isWritable, isEnumerable, isConfigurable) {
             var propertyNames = Object.keys(properties),
@@ -216,52 +216,52 @@
         }
     };
 
-    var self = giant.Properties;
+    var self = $oop.Properties;
 
-    giant.Base.addMethods(/** @lends giant.Base# */{
+    $oop.Base.addMethods(/** @lends $oop.Base# */{
         /**
          * Adds a block of public read-only methods to the class it's called on.
-         * When giant.testing is on, methods will be placed on the class differently than other properties,
+         * When $oop.testing is on, methods will be placed on the class differently than other properties,
          * therefore it is important to use .addMethods and .addPrivateMethods for method addition.
          * @param {object} methods Name - value pairs of methods to apply. Values must be functions,
          * or objects implementing a pair of get and set functions.
          * @example
-         * var myClass = giant.extend()
+         * var myClass = $oop.extend()
          *    .addMethods({
          *        foo: function () {alert("Foo");},
          *        bar: {get: function () {return "Bar";}
          *    });
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addMethods: function (methods) {
             $assertion.isAllFunctions(methods, "Invalid methods object");
 
-            self.addProperties.call(giant.Base.getTarget.call(this), methods, false, true, false);
+            self.addProperties.call($oop.Base.getTarget.call(this), methods, false, true, false);
 
             return this;
         },
 
         /**
          * Adds a block of private (non-enumerable) read-only methods to the class it's called on.
-         * Method names must match the private prefix rule set by `giant.privatePrefix`.
-         * When giant.testing is on, methods will be placed on the class differently than other properties,
+         * Method names must match the private prefix rule set by `$oop.privatePrefix`.
+         * When $oop.testing is on, methods will be placed on the class differently than other properties,
          * therefore it is important to use .addMethods and .addPrivateMethods for method addition.
          * @param {object} methods Name - value pairs of methods to apply. Values must be functions,
          * or objects implementing a pair of get and set functions.
          * @example
-         * var myClass = giant.extend()
+         * var myClass = $oop.extend()
          *    .addMethods({
          *        _foo: function () {alert("Foo");},
          *        _bar: {get: function () {return "Bar";}
          *    });
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addPrivateMethods: function (methods) {
             $assertion
                 .isAllFunctions(methods, "Some private methods are not functions.")
-                .isAllPrefixed(methods, giant.privatePrefix, "Some private method names do not match the required prefix.");
+                .isAllPrefixed(methods, $oop.privatePrefix, "Some private method names do not match the required prefix.");
 
-            self.addProperties.call(giant.Base.getTarget.call(this), methods);
+            self.addProperties.call($oop.Base.getTarget.call(this), methods);
 
             return this;
         },
@@ -275,30 +275,30 @@
          * class.
          * Trait addition preserves ES5 attributes of copied properties, but skips property named `init`.
          * Each trait must be initialized manually.
-         * @param {object|giant.Base} trait Trait object
+         * @param {object|$oop.Base} trait Trait object
          * @example
-         * MyTrait = giant.Base.extend()
+         * MyTrait = $oop.Base.extend()
          *    .addMethods({
          *        init: function () { alert("trait init"); }
          *        foo: function () { alert("hello"); }
          *    });
-         * MyClass = giant.Base.extend()
+         * MyClass = $oop.Base.extend()
          *    .addTrait(MyTrait)
          *    .addMethods({ init: function () { MyTrait.init.call(this); } });
          * myInstance = MyClass.create(); // alerts "trait init"
          * myInstance.foo(); // alerts "hello"
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addTrait: function (trait) {
             $assertion.isObject(trait, "Invalid trait descriptor");
 
             // obtaining all property names (including non-enumerable)
-            // for giant classes, only those above the base class will be considered
-            var hostTarget = giant.Base.getTarget.call(this),
-                propertyNames = giant.Properties.getPropertyNames(
+            // for $oop classes, only those above the base class will be considered
+            var hostTarget = $oop.Base.getTarget.call(this),
+                propertyNames = $oop.Properties.getPropertyNames(
                     trait,
-                    giant.Base.isBaseOf(trait) ?
-                        giant.Base :
+                    $oop.Base.isBaseOf(trait) ?
+                        $oop.Base :
                         Object.prototype
                 ),
                 i, propertyName, property;
@@ -321,7 +321,7 @@
                         hostTarget :
                         this,
                     propertyName,
-                    giant.Properties.getPropertyDescriptor(trait, propertyName)
+                    $oop.Properties.getPropertyDescriptor(trait, propertyName)
                 );
             }
 
@@ -331,9 +331,9 @@
         /**
          * Adds trait to current class then extends it, allowing subsequently added methods to override
          * the trait's methods.
-         * @param {object|giant.Base} trait
-         * @returns {giant.Base}
-         * @see giant.Base.addTrait
+         * @param {object|$oop.Base} trait
+         * @returns {$oop.Base}
+         * @see $oop.Base.addTrait
          */
         addTraitAndExtend: function (trait) {
             return this
@@ -344,7 +344,7 @@
         /**
          * Adds a block of public (enumerable) writable properties to the current class or instance.
          * @param {object} properties Name-value pairs of properties.
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addPublic: function (properties) {
             self.addProperties.call(this, properties, true, true, false);
@@ -353,12 +353,12 @@
 
         /**
          * Adds a block of private (non-enumerable) writable properties to the current class or instance.
-         * Property names must match the private prefix rule set by `giant.privatePrefix`.
+         * Property names must match the private prefix rule set by `$oop.privatePrefix`.
          * @param {object} properties Name-value pairs of properties.
-         * @returns {giant.base}
+         * @returns {$oop.base}
          */
         addPrivate: function (properties) {
-            $assertion.isAllPrefixed(properties, giant.privatePrefix, "Some private property names do not match the required prefix.");
+            $assertion.isAllPrefixed(properties, $oop.privatePrefix, "Some private property names do not match the required prefix.");
 
             self.addProperties.call(this, properties, true, false, false);
 
@@ -368,7 +368,7 @@
         /**
          * Adds a block of public (enumerable) constant (read-only) properties to the current class or instance.
          * @param {object} properties Name-value pairs of constant properties
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addConstants: function (properties) {
             self.addProperties.call(this, properties, false, true, false);
@@ -377,12 +377,12 @@
 
         /**
          * Adds a block of private (non-enumerable) constant (read-only) properties to the current class or instance.
-         * Property names must match the private prefix rule set by `giant.privatePrefix`.
+         * Property names must match the private prefix rule set by `$oop.privatePrefix`.
          * @param {object} properties Name-value pairs of private constant properties.
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         addPrivateConstants: function (properties) {
-            $assertion.isAllPrefixed(properties, giant.privatePrefix, "Some private constant names do not match the required prefix.");
+            $assertion.isAllPrefixed(properties, $oop.privatePrefix, "Some private constant names do not match the required prefix.");
 
             self.addProperties.call(this, properties);
 
@@ -394,7 +394,7 @@
          * Ties context to the object it was elevated to, so methods may be safely passed as event handlers.
          * @param {string} methodName Name of method to elevate.
          * @example
-         * ClassA = giant.Base.extend()
+         * ClassA = $oop.Base.extend()
          *    .addMethods({
          *        init: function () {},
          *        foo: function () { alert(this.bar); }
@@ -408,7 +408,7 @@
          *     });
          * foo = ClassB.create().foo; // should lose context
          * foo(); // alerts "hello", for context was preserved
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         elevateMethod: function (methodName) {
             $assertion.isString(methodName, "Invalid method name");
@@ -421,7 +421,7 @@
 
             elevatedMethod = {};
             elevatedMethod[methodName] = baseMethod.bind(this);
-            giant.Base.addMethods.call(this, elevatedMethod);
+            $oop.Base.addMethods.call(this, elevatedMethod);
 
             return this;
         },
@@ -429,8 +429,8 @@
         /**
          * Elevates multiple methods. Method names are expected to be passed as individual arguments.
          * (In no particular order.)
-         * @returns {giant.Base}
-         * @see giant.Base#elevateMethod
+         * @returns {$oop.Base}
+         * @see $oop.Base#elevateMethod
          */
         elevateMethods: function () {
             var base = this.getBase(),
@@ -444,7 +444,7 @@
             }
 
             $assertion.isAllFunctions(elevatedMethods, "Attempted to elevate non-method");
-            giant.Base.addMethods.call(this, elevatedMethods);
+            $oop.Base.addMethods.call(this, elevatedMethods);
 
             return this;
         },
@@ -453,8 +453,8 @@
          * Adds a block of public (enumerable) mock methods (read-only, but removable) to the current instance or class.
          * @param {object} methods Name-value pairs of methods. Values must be functions or getter-setter objects.
          * @example
-         * giant.testing = true;
-         * MyClass = giant.Base.extend()
+         * $oop.testing = true;
+         * MyClass = $oop.Base.extend()
          *      .addMethods({
          *          init: function () {},
          *          foo: function () {}
@@ -464,12 +464,12 @@
          *     foo: function () {return 'FOO';}
          * });
          * myInstance.foo() // returns 'FOO'
-         * @see giant.Base#addMethods
-         * @returns {giant.Base}
+         * @see $oop.Base#addMethods
+         * @returns {$oop.Base}
          */
         addMocks: function (methods) {
             $assertion
-                .assert(giant.testing, "Giant is not in testing mode.")
+                .assert($oop.testing, "Giant is not in testing mode.")
                 .isAllFunctions(methods, "Some mock methods are not functions.");
 
             self.addProperties.call(this, methods, false, true, true);
@@ -479,7 +479,7 @@
 
         /**
          * Removes all mock methods from the current class or instance.
-         * @returns {giant.Base}
+         * @returns {$oop.Base}
          */
         removeMocks: function () {
             var propertyNames = Object.keys(this),
@@ -503,7 +503,7 @@
         }
     });
 
-    giant.Base.addPublic.call(giant, /** @lends giant */{
+    $oop.Base.addPublic.call($oop, /** @lends $oop */{
         /**
          * Prefix applied to names of private properties and methods.
          * @type {string}

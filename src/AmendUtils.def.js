@@ -1,4 +1,4 @@
-/*global giant */
+/*global $oop */
 (function () {
     "use strict";
 
@@ -6,7 +6,7 @@
      * @class
      * @ignore
      */
-    giant.AmendUtils = {
+    $oop.AmendUtils = {
         /**
          * Retrieves amendments from postponed definition.
          * Returns empty array when argument is not property descriptor or descriptor has no amendments assigned.
@@ -56,7 +56,7 @@
             if (amendments instanceof Array) {
                 for (i = 0; i < amendments.length; i++) {
                     amendment = amendments[i];
-                    amendment.modifier.apply(giant, amendment.args);
+                    amendment.modifier.apply($oop, amendment.args);
                 }
             }
         }
