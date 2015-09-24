@@ -11,7 +11,7 @@
      * @param {object} methods Override methods. All method names must be prefixed with "to".
      */
     giant.extendBuiltIn = function (builtInPrototype, methods) {
-        giant
+        $assertion
             .isAllFunctions(methods, "Invalid methods")
             .isAllPrefixed(methods, 'to', "Invalid method names");
 

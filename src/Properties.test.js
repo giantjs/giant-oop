@@ -5,7 +5,7 @@
     module("Properties");
 
     test("Prefix restriction assertion", function () {
-        var v = giant.validators;
+        var v = $assertion.validators;
 
         equal(
             v.isAllPrefixed({foo: 'hello', bar: 'world'}, 'f'),
@@ -21,7 +21,7 @@
     });
 
     test("Accessor validation", function () {
-        var v = giant.validators,
+        var v = $assertion.validators,
             derived = Object.create({});
 
         derived.get = function () {};

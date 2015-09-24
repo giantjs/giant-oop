@@ -2,7 +2,7 @@
 (function () {
     "use strict";
 
-    giant.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends giant */{
         /**
          * Checks whether properties of `expr` are *all* functions.
          * @param {object} expr
@@ -61,7 +61,7 @@
          * @ignore
          */
         addMethods: function (methods) {
-            giant.isAllFunctions(methods, "Some methods are not functions.");
+            $assertion.isAllFunctions(methods, "Some methods are not functions.");
 
             var methodNames = Object.keys(methods),
                 i, methodName;

@@ -37,7 +37,7 @@
     });
 
     test("Custom assertions", function () {
-        var v = giant.validators,
+        var v = $assertion.validators,
             extended = giant.Base.extend();
 
         equal(v.isClass(extended), true, "Giant class passes assertion");

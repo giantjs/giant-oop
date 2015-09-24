@@ -56,7 +56,7 @@
          * @returns {giant.Base}
          */
         setInstanceMapper: function (instanceMapper) {
-            giant
+            $assertion
                 .isFunction(instanceMapper, "Invalid instance key calculator")
                 .assert(!hOP.call(this, 'instanceMapper'), "Instance mapper already set");
 
@@ -99,7 +99,7 @@
          * @see giant.Base.setInstanceMapper
          */
         clearInstanceRegistry: function () {
-            giant.assert(hOP.call(this, 'instanceRegistry'), "Class doesn't own an instance registry");
+            $assertion.assert(hOP.call(this, 'instanceRegistry'), "Class doesn't own an instance registry");
             this.instanceRegistry = {};
             return this;
         }

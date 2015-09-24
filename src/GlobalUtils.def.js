@@ -8,7 +8,7 @@
          * @returns {giant}
          */
         addGlobalFunctions: function (functions) {
-            giant.isAllFunctions(functions, "Invalid functions object");
+            $assertion.isAllFunctions(functions, "Invalid functions object");
             giant.Properties.addProperties.call(giant, functions, false, true, false);
             return this;
         },

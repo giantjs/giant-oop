@@ -14,7 +14,7 @@
          * @returns {Array}
          */
         getAmendments: function (propertyDescriptor) {
-            return giant.validators.isSetterGetterDescriptor(propertyDescriptor) &&
+            return $assertion.validators.isSetterGetterDescriptor(propertyDescriptor) &&
                    propertyDescriptor.get.amendments ||
                    [];
         },

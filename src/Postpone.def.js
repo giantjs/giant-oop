@@ -4,9 +4,9 @@
 
     var hOP = Object.prototype.hasOwnProperty,
         slice = Array.prototype.slice,
-        validators = giant.validators;
+        validators = $assertion.validators;
 
-    giant.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends giant */{
         /**
          * Determines whether a property descriptor is a getter-setter.
          * @param {object} propertyDescriptor
@@ -50,7 +50,7 @@
          * obj.foo // runs generator and alerts "bar"
          */
         postpone: function (host, propertyName, generator) {
-            giant
+            $assertion
                 .isObject(host, "Host is not an Object")
                 .isString(propertyName, "Invalid property name")
                 .isFunction(generator, "Invalid generator function");
@@ -143,7 +143,7 @@
          * // howdy is not added until first access to `ns.foo`
          */
         amendPostponed: function (host, propertyName, modifier) {
-            giant
+            $assertion
                 .isObject(host, "Host is not an Object")
                 .isString(propertyName, "Invalid property name")
                 .isFunction(modifier, "Invalid generator function");

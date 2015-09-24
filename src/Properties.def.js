@@ -3,9 +3,9 @@
     "use strict";
 
     var hOP = Object.prototype.hasOwnProperty,
-        validators = giant.validators;
+        validators = $assertion.validators;
 
-    giant.addTypes(/** @lends giant */{
+    $assertion.addTypes(/** @lends giant */{
         /**
          * Checks whether host object has propertyName defined as its
          * own property.
@@ -134,7 +134,7 @@
          * @param {boolean} [isConfigurable]
          */
         addProperty: function (propertyName, value, isWritable, isEnumerable, isConfigurable) {
-            giant
+            $assertion
                 .isString(propertyName, "Invalid property name")
                 .isBooleanOptional(isWritable)
                 .isBooleanOptional(isEnumerable)
@@ -158,7 +158,7 @@
          * @param {boolean} [isConfigurable]
          */
         addAccessor: function (propertyName, getter, setter, isEnumerable, isConfigurable) {
-            giant
+            $assertion
                 .isString(propertyName, "Invalid property name")
                 .isFunctionOptional(getter)
                 .isFunctionOptional(setter)
@@ -189,7 +189,7 @@
             for (i = 0; i < propertyNames.length; i++) {
                 // making sure property name is available
                 propertyName = propertyNames[i];
-                giant.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
+                $assertion.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
 
                 // adding accessor / property
                 property = properties[propertyName];
@@ -234,7 +234,7 @@
          * @returns {giant.Base}
          */
         addMethods: function (methods) {
-            giant.isAllFunctions(methods, "Invalid methods object");
+            $assertion.isAllFunctions(methods, "Invalid methods object");
 
             self.addProperties.call(giant.Base.getTarget.call(this), methods, false, true, false);
 
@@ -257,7 +257,7 @@
          * @returns {giant.Base}
          */
         addPrivateMethods: function (methods) {
-            giant
+            $assertion
                 .isAllFunctions(methods, "Some private methods are not functions.")
                 .isAllPrefixed(methods, giant.privatePrefix, "Some private method names do not match the required prefix.");
 
@@ -290,7 +290,7 @@
          * @returns {giant.Base}
          */
         addTrait: function (trait) {
-            giant.isObject(trait, "Invalid trait descriptor");
+            $assertion.isObject(trait, "Invalid trait descriptor");
 
             // obtaining all property names (including non-enumerable)
             // for giant classes, only those above the base class will be considered
@@ -312,7 +312,7 @@
                 }
 
                 // trait properties must not collide w/ host's
-                giant.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
+                $assertion.isPropertyNameAvailable(propertyName, this, "Direct property conflict");
 
                 // copying property over w/ original attributes
                 property = trait[propertyName];
@@ -358,7 +358,7 @@
          * @returns {giant.base}
          */
         addPrivate: function (properties) {
-            giant.isAllPrefixed(properties, giant.privatePrefix, "Some private property names do not match the required prefix.");
+            $assertion.isAllPrefixed(properties, giant.privatePrefix, "Some private property names do not match the required prefix.");
 
             self.addProperties.call(this, properties, true, false, false);
 
@@ -382,7 +382,7 @@
          * @returns {giant.Base}
          */
         addPrivateConstants: function (properties) {
-            giant.isAllPrefixed(properties, giant.privatePrefix, "Some private constant names do not match the required prefix.");
+            $assertion.isAllPrefixed(properties, giant.privatePrefix, "Some private constant names do not match the required prefix.");
 
             self.addProperties.call(this, properties);
 
@@ -411,13 +411,13 @@
          * @returns {giant.Base}
          */
         elevateMethod: function (methodName) {
-            giant.isString(methodName, "Invalid method name");
+            $assertion.isString(methodName, "Invalid method name");
 
             var base = this.getBase(), // class or base class
                 baseMethod = base[methodName],
                 elevatedMethod;
 
-            giant.isFunction(baseMethod, "Attempted to elevate non-method.", methodName);
+            $assertion.isFunction(baseMethod, "Attempted to elevate non-method.", methodName);
 
             elevatedMethod = {};
             elevatedMethod[methodName] = baseMethod.bind(this);
@@ -443,7 +443,7 @@
                 elevatedMethods[methodName] = baseMethod.bind(this);
             }
 
-            giant.isAllFunctions(elevatedMethods, "Attempted to elevate non-method");
+            $assertion.isAllFunctions(elevatedMethods, "Attempted to elevate non-method");
             giant.Base.addMethods.call(this, elevatedMethods);
 
             return this;
@@ -468,7 +468,7 @@
          * @returns {giant.Base}
          */
         addMocks: function (methods) {
-            giant
+            $assertion
                 .assert(giant.testing, "Giant is not in testing mode.")
                 .isAllFunctions(methods, "Some mock methods are not functions.");
 

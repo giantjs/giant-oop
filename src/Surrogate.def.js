@@ -96,7 +96,7 @@
          * @see giant.Base.addSurrogate
          */
         prepareSurrogates: function (handler) {
-            giant.isFunction(handler, "Invalid handler");
+            $assertion.isFunction(handler, "Invalid handler");
 
             if (!hOP.call(this, 'surrogateInfo')) {
                 giant.Surrogate.initSurrogates.call(this);
@@ -136,7 +136,7 @@
         addSurrogate: function (namespace, className, filter, priority) {
             priority = priority || 0;
 
-            giant
+            $assertion
                 .isObject(namespace, "Invalid namespace object")
                 .isString(className, "Invalid class name")
                 .isFunction(filter, "Invalid filter function");
