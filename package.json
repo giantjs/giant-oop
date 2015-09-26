@@ -20,7 +20,6 @@
     "url": "git@github.com:giantjs/giant-oop.git"
   },
   "dependencies": {
-    "giant-namespace": "0.1.0",
     "giant-assertion": "0.1.0"
   },
   "devDependencies": {
