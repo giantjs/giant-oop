@@ -1,4 +1,3 @@
-/*global $oop, module, test, ok, equal, deepEqual, expect */
 (function () {
     "use strict";
 

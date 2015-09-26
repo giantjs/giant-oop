@@ -1,4 +1,3 @@
-/*global $oop */
 (function () {
     "use strict";
 

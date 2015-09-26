@@ -1,4 +1,3 @@
-/*global $oop */
 var ns = {}; // global namespace
 
 (function () {

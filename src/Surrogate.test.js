@@ -1,4 +1,3 @@
-/*global $oop */
 var globalNs = {};
 
 (function () {
