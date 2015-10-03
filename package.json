@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git@github.com:giantjs/giant-oop.git"
   },
-  "dependencies": {
+  "peerDependencies": {
     "giant-assertion": "0.1.0"
   },
   "devDependencies": {
