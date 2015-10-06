@@ -1,6 +1,6 @@
 {
   "name": "giant-oop",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "OOP module for Giant",
   "keywords": [
     "oop",
@@ -20,7 +20,7 @@
     "url": "git@github.com:giantjs/giant-oop.git"
   },
   "peerDependencies": {
-    "giant-assertion": "0.1.0"
+    "giant-assertion": "0.2.0"
   },
   "devDependencies": {
     "grocer": "^0.5.0",
