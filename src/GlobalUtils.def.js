@@ -14,7 +14,7 @@
 
         /**
          * Adds constants to the global $oop namespace.
-         * @param {object} constants Override methods. All method names must be prefixed with "to".
+         * @param {object} constants Constants to be added. Should include primitive values only.
          * @returns {$oop}
          */
         addGlobalConstants: function (constants) {
