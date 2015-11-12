@@ -11,10 +11,11 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
+            'node_modules/phantomjs-function-bind-polyfill/index.js',
+
             'node_modules/giant-assertion/lib/giant-assertion.js',
 
             'src/namespace.js',
-
             'src/Feature.def.js',
             'src/Base.def.js',
             'src/Memoization.def.js',
@@ -25,7 +26,6 @@ module.exports = function (config) {
             'src/GlobalUtils.def.js',
             'src/BuiltInUtils.def.js',
             'src/Postpone.def.js',
-
             'src/**/*.test.js'
         ],
 
@@ -56,7 +56,7 @@ module.exports = function (config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ['PhantomJS'],
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
