@@ -27,6 +27,9 @@
   },
   "devDependencies": {
     "giant-asset": "0.2.0",
+    "giant-data": "0.2.0",
+    "giant-oop": "0.2.0",
+    "giant-utils": "0.2.0",
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",
     "grunt-karma": "^0.12.1",
