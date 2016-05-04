@@ -25,6 +25,28 @@
         },
 
         /**
+         * Checks whether properties of `expr` are *all* non functions.
+         * @param {object} expr
+         */
+        hasNoFunctions: function (expr) {
+            var methodNames,
+                i;
+
+            if (!this.isObject(expr)) {
+                return true;
+            }
+
+            methodNames = Object.keys(expr);
+            for (i = 0; i < methodNames.length; i++) {
+                if (this.isFunctionOptional(expr[methodNames[i]])) {
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        /**
          * Verifies if `expr` is a Giant class.
          * @param {$oop.Base} expr
          */

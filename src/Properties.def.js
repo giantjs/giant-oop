@@ -16,7 +16,7 @@
         },
 
         /**
-         * Checks property names against prefix.
+         * Checks property names against prefix ensuring that all match.
          * @param {object} expr Host object.
          * @param {string} prefix Prefix.
          */
@@ -31,6 +31,30 @@
             propertyNames = Object.keys(expr);
             for (i = 0; i < propertyNames.length; i++) {
                 if (propertyNames[i].substr(0, prefix.length) !== prefix) {
+                    // prefix doesn't match property name
+                    return false;
+                }
+            }
+
+            return true;
+        },
+
+        /**
+         * Checks property names against prefix ensuring that none match.
+         * @param {object} expr Host object.
+         * @param {string} prefix Prefix.
+         */
+        hasNonePrefixed: function (expr, prefix) {
+            var propertyNames,
+                i;
+
+            if (!this.isString(prefix) || !this.isPlainObject(expr)) {
+                return true;
+            }
+
+            propertyNames = Object.keys(expr);
+            for (i = 0; i < propertyNames.length; i++) {
+                if (propertyNames[i].substr(0, prefix.length) === prefix) {
                     // prefix doesn't match property name
                     return false;
                 }
@@ -233,7 +257,9 @@
          * @returns {$oop.Base}
          */
         addMethods: function (methods) {
-            $assertion.isAllFunctions(methods, "Invalid methods object");
+            $assertion
+                .isAllFunctions(methods, "Invalid methods object")
+                .hasNonePrefixed(methods, $oop.privatePrefix, "Some public methods names have the private prefix.");
 
             self.addProperties.call($oop.Base.getTarget.call(this), methods, false, true, false);
 
@@ -346,6 +372,8 @@
          * @returns {$oop.Base}
          */
         addPublic: function (properties) {
+            $assertion.hasNonePrefixed(properties, $oop.privatePrefix, "Some public property names have the private prefix.");
+
             self.addProperties.call(this, properties, true, true, false);
             return this;
         },
@@ -357,7 +385,9 @@
          * @returns {$oop.base}
          */
         addPrivate: function (properties) {
-            $assertion.isAllPrefixed(properties, $oop.privatePrefix, "Some private property names do not match the required prefix.");
+            $assertion
+                .hasNoFunctions(properties, "Invalid private object")
+                .isAllPrefixed(properties, $oop.privatePrefix, "Some private property names do not match the required prefix.");
 
             self.addProperties.call(this, properties, true, false, false);
 
@@ -370,6 +400,9 @@
          * @returns {$oop.Base}
          */
         addConstants: function (properties) {
+            $assertion
+                .hasNonePrefixed(properties, $oop.privatePrefix, "Some constant property names have the private prefix.");
+
             self.addProperties.call(this, properties, false, true, false);
             return this;
         },
@@ -381,7 +414,9 @@
          * @returns {$oop.Base}
          */
         addPrivateConstants: function (properties) {
-            $assertion.isAllPrefixed(properties, $oop.privatePrefix, "Some private constant names do not match the required prefix.");
+            $assertion
+                .hasNoFunctions(properties, "Invalid private constants object")
+                .isAllPrefixed(properties, $oop.privatePrefix, "Some private constant names do not match the required prefix.");
 
             self.addProperties.call(this, properties);
 
@@ -420,7 +455,8 @@
 
             elevatedMethod = {};
             elevatedMethod[methodName] = baseMethod.bind(this);
-            $oop.Base.addMethods.call(this, elevatedMethod);
+
+            self.addProperties.call($oop.Base.getTarget.call(this), elevatedMethod, false, true, false);
 
             return this;
         },
@@ -443,7 +479,8 @@
             }
 
             $assertion.isAllFunctions(elevatedMethods, "Attempted to elevate non-method");
-            $oop.Base.addMethods.call(this, elevatedMethods);
+
+            self.addProperties.call($oop.Base.getTarget.call(this), elevatedMethods, false, true, false);
 
             return this;
         },
