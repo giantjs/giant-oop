@@ -11,8 +11,6 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'node_modules/phantomjs-function-bind-polyfill/index.js',
-
             'node_modules/giant-assertion/lib/giant-assertion.js',
 
             'src/namespace.js',
