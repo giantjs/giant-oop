@@ -38,7 +38,7 @@
 
             methodNames = Object.keys(expr);
             for (i = 0; i < methodNames.length; i++) {
-                if (this.isFunctionOptional(expr[methodNames[i]])) {
+                if (this.isFunction(expr[methodNames[i]])) {
                     return false;
                 }
             }

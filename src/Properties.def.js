@@ -151,7 +151,7 @@
          * Adds single value property to the context.
          * @this {$oop.Base}
          * @param {string} propertyName Property name.
-         * @param value {*} Property value to be assigned.
+         * @param {*} value Property value to be assigned.
          * @param {boolean} [isWritable]
          * @param {boolean} [isEnumerable]
          * @param {boolean} [isConfigurable]
